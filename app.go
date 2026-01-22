@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"log"
 	"moonshot/util"
 	"os"
 
+	"github.com/diskfs/go-diskfs/partition/gpt"
 	"github.com/jaypipes/ghw"
 	"github.com/jaypipes/ghw/pkg/block"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -36,26 +39,58 @@ type SourceFile struct {
 	Path     string `json:"path"`
 	Basename string `json:"basename"`
 	Size     int64  `json:"size"`
+	ValidGPT bool   `json:"validGPT"`
 }
 
 func (a *App) SelectFile(filepath *string) (*SourceFile, error) {
 	if filepath == nil {
-		fp, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{})
+		fp, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+			Filters: []runtime.FileFilter{
+				{
+					DisplayName: "Disk Images (*.img, *.img.*, *.iso, *.raw)",
+					// TODO: Same thing for DND
+					Pattern: "*.img;*.iso;*.raw;*.img.*",
+				},
+			},
+		})
 		if err != nil {
 			return nil, err
 		}
 		filepath = &fp
 	}
 
-	stat, err := os.Stat(*filepath)
+	file, err := os.Open(*filepath)
 	if err != nil {
 		return nil, err
+	}
+	defer file.Close()
+
+	stat, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+
+	validGpt := false
+
+	table, err := gpt.Read(file, 512, 512)
+	if err != nil {
+		log.Println(err)
+	}
+
+	if table != nil {
+		table, err := gpt.Read(file, 512, 512)
+		if err != nil {
+			log.Println(err)
+		} else if table != nil {
+			validGpt = true
+		}
 	}
 
 	return &SourceFile{
 		Path:     *filepath,
 		Basename: stat.Name(),
 		Size:     stat.Size(),
+		ValidGPT: validGpt,
 	}, nil
 }
 
@@ -92,45 +127,39 @@ func (a *App) FlashDrive(filePath string, drivePath string) error {
 		return err
 	}
 
-	cmdStr := fmt.Sprintf("sudo '%s' flash %s", exe, fmt.Sprintf("\"%s\" \"%s\"", filePath, drivePath))
-	println(cmdStr)
-	cmd := util.RunAsRoot(cmdStr)
+	cmd := util.RunAsRoot([]string{exe, "flash", filePath, drivePath})
+	cmd.Stderr = os.Stderr
 
-	b, err := cmd.CombinedOutput()
+	// b, err := cmd.CombinedOutput()
+	// if err != nil {
+	// 	println(string(b))
+	// 	println("Error:", err.Error())
+	// 	return err
+	// }
+	// println(string(b))
+
+	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		println(string(b))
-		println("Error:", err.Error())
 		return err
 	}
-	println(string(b))
 
-	// stdout, err := cmd.StdoutPipe()
-	// if err != nil {
-	// 	return err
-	// }
+	if err := cmd.Start(); err != nil {
+		return err
+	}
 
-	// if err := cmd.Start(); err != nil {
-	// 	return err
-	// }
+	scanner := bufio.NewScanner(stdout)
 
-	// go func() {
-	// 	io.Copy(os.Stdout, stdout)
-	// 	// println("owo")
-	// 	// scanner := bufio.NewScanner(stdout)
+	for scanner.Scan() {
+		runtime.EventsEmit(a.ctx, "progress", scanner.Text())
+	}
 
-	// 	// for scanner.Scan() {
-	// 	// 	println(scanner.Text())
-	// 	// 	runtime.EventsEmit(a.ctx, "progress", scanner.Text())
-	// 	// }
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
 
-	// 	// if err := scanner.Err(); err != nil {
-	// 	// 	panic(err)
-	// 	// }
-	// }()
-
-	// if err := cmd.Wait(); err != nil {
-	// 	return err
-	// }
+	if err := cmd.Wait(); err != nil {
+		return err
+	}
 
 	return nil
 }

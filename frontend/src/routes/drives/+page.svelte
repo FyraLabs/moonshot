@@ -9,8 +9,7 @@
 	import { appState } from '../state.svelte';
 
 	let drives: Awaited<ReturnType<typeof ListDrives>> = $state([]);
-	let selectableDrives = $derived(drives);
-	// let selectableDrives = $derived(drives.filter((d) => d.removable));
+	let selectableDrives = $derived(drives.filter((d) => d.removable));
 
 	onMount(async () => {
 		drives = await ListDrives();

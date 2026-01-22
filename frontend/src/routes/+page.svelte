@@ -10,8 +10,6 @@
 	import { appState } from './state.svelte';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 
-	let isInvalidImage = $state(false);
-
 	onMount(() => {
 		OnFileDrop(async (_x, _y, paths) => {
 			if (appState.file) return;
@@ -37,18 +35,19 @@
 		</h2>
 	</div>
 
-	{#if isInvalidImage}
+	{#if appState.file && !appState.file.validGPT}
 		<Alert.Root variant="destructive">
 			<CircleAlert />
 			<Alert.Title>Potentially Invalid Image</Alert.Title>
 			<Alert.Description
-				>The image doesn't seem to be a valid GPT disk or ISO. Your operating system will probably
-				not boot.</Alert.Description
+				>The image doesn't seem to be a valid GPT disk. Your operating system will probably not
+				boot.</Alert.Description
 			>
 		</Alert.Root>
 	{/if}
 
-	<div
+	<button
+		type="button"
 		class="flex w-full flex-1 flex-col items-center justify-center rounded border-2 border-dotted border-muted"
 		onclick={selectImage}
 		style="--wails-drop-target: drop;"
@@ -69,7 +68,7 @@
 				<p>Drag and drop or <span>click to select a file</span></p>
 			{/if}
 		</div>
-	</div>
+	</button>
 
 	<Button class="ml-auto min-w-28" disabled={!appState.file} onclick={() => goto('/drives')}
 		>Next</Button

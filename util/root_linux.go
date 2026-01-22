@@ -2,8 +2,11 @@
 
 package util
 
-import "os/exec"
+import (
+	"os/exec"
+)
 
-func RunAsRoot(program string) *exec.Cmd {
-	return nil
+func RunAsRoot(program []string) *exec.Cmd {
+	cmd := exec.Command("pkexec", program...)
+	return cmd
 }

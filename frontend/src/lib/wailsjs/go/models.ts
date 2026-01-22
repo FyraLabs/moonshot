@@ -89,6 +89,7 @@ export namespace main {
 	    path: string;
 	    basename: string;
 	    size: number;
+	    validGPT: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new SourceFile(source);
@@ -99,6 +100,7 @@ export namespace main {
 	        this.path = source["path"];
 	        this.basename = source["basename"];
 	        this.size = source["size"];
+	        this.validGPT = source["validGPT"];
 	    }
 	}
 

@@ -37,7 +37,7 @@
 			class="min-w-28"
 			disabled={false}
 			onclick={() => {
-				FlashDrive(appState.file.path, '/dev/rdisk9');
+				FlashDrive(appState.file.path, '/dev/sda');
 				goto('/progress');
 			}}
 			variant="destructive">Confirm</Button
