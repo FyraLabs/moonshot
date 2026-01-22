@@ -1,0 +1,63 @@
+<script lang="ts">
+	import { Button } from '$lib/components/ui/button';
+	import { SelectFile } from '$lib/wailsjs/go/main/App';
+	import { OnFileDrop, OnFileDropOff } from '$lib/wailsjs/runtime';
+
+	import { onMount } from 'svelte';
+	import prettyBytes from 'pretty-bytes';
+	import { Upload, File } from '@lucide/svelte';
+	import { goto } from '$app/navigation';
+	import { appState } from './state.svelte';
+
+	onMount(() => {
+		OnFileDrop(async (_x, _y, paths) => {
+			if (appState.file) return;
+			if (paths.length > 0) {
+				appState.file = await SelectFile(paths[0]);
+			}
+		}, false);
+
+		return () => OnFileDropOff();
+	});
+
+	async function selectImage() {
+		if (appState.file) return;
+		appState.file = await SelectFile();
+	}
+</script>
+
+<div class="flex h-screen flex-col gap-6 p-6">
+	<div>
+		<h1 class="text-2xl font-bold">Select your image</h1>
+		<h2 class="text-md text-muted-foreground">
+			This is the operating system to flash to your drive.
+		</h2>
+	</div>
+
+	<div
+		class="flex w-full flex-1 flex-col items-center justify-center rounded border-2 border-dotted border-muted"
+		onclick={selectImage}
+		style="--wails-drop-target: drop;"
+	>
+		<div class="flex flex-col items-center gap-2">
+			{#if appState.file}
+				<File />
+				<p>{appState.file.basename} ({prettyBytes(appState.file.size)})</p>
+				<Button
+					variant="outline"
+					onclick={(e) => {
+						e.stopPropagation();
+						appState.file = null;
+					}}>Clear</Button
+				>
+			{:else}
+				<Upload />
+				<p>Drag and drop or <span>click to select a file</span></p>
+			{/if}
+		</div>
+	</div>
+
+	<Button class="ml-auto min-w-28" disabled={!appState.file} onclick={() => goto('/drives')}
+		>Next</Button
+	>
+</div>
