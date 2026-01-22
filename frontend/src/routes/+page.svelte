@@ -5,9 +5,12 @@
 
 	import { onMount } from 'svelte';
 	import prettyBytes from 'pretty-bytes';
-	import { Upload, File } from '@lucide/svelte';
+	import { Upload, File, CircleAlert } from '@lucide/svelte';
 	import { goto } from '$app/navigation';
 	import { appState } from './state.svelte';
+	import * as Alert from '$lib/components/ui/alert/index.js';
+
+	let isInvalidImage = $state(false);
 
 	onMount(() => {
 		OnFileDrop(async (_x, _y, paths) => {
@@ -33,6 +36,17 @@
 			This is the operating system to flash to your drive.
 		</h2>
 	</div>
+
+	{#if isInvalidImage}
+		<Alert.Root variant="destructive">
+			<CircleAlert />
+			<Alert.Title>Potentially Invalid Image</Alert.Title>
+			<Alert.Description
+				>The image doesn't seem to be a valid GPT disk or ISO. Your operating system will probably
+				not boot.</Alert.Description
+			>
+		</Alert.Root>
+	{/if}
 
 	<div
 		class="flex w-full flex-1 flex-col items-center justify-center rounded border-2 border-dotted border-muted"
