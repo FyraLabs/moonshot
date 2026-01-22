@@ -2,6 +2,8 @@ package main
 
 import (
 	"embed"
+	"moonshot/lib"
+	"os"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -12,6 +14,21 @@ import (
 var assets embed.FS
 
 func main() {
+	if len(os.Args) > 2 && os.Args[1] == "flash" {
+		ch := make(chan int)
+		go func() {
+			select {
+			case n := <-ch:
+				println("Flashed", n, "bytes")
+			}
+		}()
+		if err := lib.Flash(os.Args[2], os.Args[3], ch); err != nil {
+			println("Error:", err.Error())
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
+
 	// Create an instance of the app structure
 	app := NewApp()
 

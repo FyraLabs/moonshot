@@ -4,6 +4,7 @@
 	import { ArrowRight, HardDrive, File, ArrowDown } from '@lucide/svelte';
 	import { appState } from '../state.svelte';
 	import prettyBytes from 'pretty-bytes';
+	import { FlashDrive } from '$lib/wailsjs/go/main/App';
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -32,8 +33,14 @@
 
 	<div class="ml-auto flex gap-3">
 		<Button class="min-w-28" onclick={() => goto('/drives')} variant="outline">Back</Button>
-		<Button class="min-w-28" disabled={true} onclick={() => goto('/progress')} variant="destructive"
-			>Confirm</Button
+		<Button
+			class="min-w-28"
+			disabled={false}
+			onclick={() => {
+				FlashDrive(appState.file.path, '/dev/rdisk9');
+				goto('/progress');
+			}}
+			variant="destructive">Confirm</Button
 		>
 	</div>
 </div>

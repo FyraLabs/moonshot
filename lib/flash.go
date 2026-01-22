@@ -5,20 +5,14 @@ import (
 	"os"
 
 	"github.com/ncw/directio"
-	"github.com/schollz/progressbar/v3"
 )
 
-func Flash(filePath string, drivePath string) error {
+func Flash(filePath string, drivePath string, progressCh chan int) error {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
-
-	fileStat, err := file.Stat()
-	if err != nil {
-		return err
-	}
 
 	drive, err := directio.OpenFile(drivePath, os.O_WRONLY, 0666)
 	if err != nil {
@@ -27,8 +21,6 @@ func Flash(filePath string, drivePath string) error {
 	defer drive.Close()
 
 	block := directio.AlignedBlock(directio.BlockSize * 256)
-
-	bar := progressbar.DefaultBytes(fileStat.Size(), "flashing")
 
 	for {
 		_, err := io.ReadFull(file, block)
@@ -39,12 +31,13 @@ func Flash(filePath string, drivePath string) error {
 			return err
 		}
 
-		_, err = io.MultiWriter(drive, bar).Write(block)
+		n, err := drive.Write(block)
 		if err != nil {
 			return err
 		}
+
+		progressCh <- n
 	}
 
 	return nil
-
 }

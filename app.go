@@ -3,12 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"io"
+	"moonshot/util"
 	"os"
 
 	"github.com/jaypipes/ghw"
 	"github.com/jaypipes/ghw/pkg/block"
-	"github.com/ncw/directio"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -87,36 +86,51 @@ func (a *App) ListDrives() ([]*block.Disk, error) {
 	return block.Disks, nil
 }
 
-func (a *App) FlashDrive(drivePath string, filePath string) error {
-	file, err := os.Open(filePath)
+func (a *App) FlashDrive(filePath string, drivePath string) error {
+	exe, err := os.Executable()
 	if err != nil {
 		return err
 	}
-	defer file.Close()
 
-	drive, err := directio.OpenFile(drivePath, os.O_WRONLY, 0666)
+	cmdStr := fmt.Sprintf("sudo '%s' flash %s", exe, fmt.Sprintf("\"%s\" \"%s\"", filePath, drivePath))
+	println(cmdStr)
+	cmd := util.RunAsRoot(cmdStr)
+
+	b, err := cmd.CombinedOutput()
 	if err != nil {
+		println(string(b))
+		println("Error:", err.Error())
 		return err
 	}
-	defer drive.Close()
+	println(string(b))
 
-	block := directio.AlignedBlock(directio.BlockSize)
+	// stdout, err := cmd.StdoutPipe()
+	// if err != nil {
+	// 	return err
+	// }
 
-	for {
-		println("owo")
-		_, err := io.ReadFull(file, block)
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return err
-		}
+	// if err := cmd.Start(); err != nil {
+	// 	return err
+	// }
 
-		_, err = drive.Write(block)
-		if err != nil {
-			return err
-		}
-	}
+	// go func() {
+	// 	io.Copy(os.Stdout, stdout)
+	// 	// println("owo")
+	// 	// scanner := bufio.NewScanner(stdout)
+
+	// 	// for scanner.Scan() {
+	// 	// 	println(scanner.Text())
+	// 	// 	runtime.EventsEmit(a.ctx, "progress", scanner.Text())
+	// 	// }
+
+	// 	// if err := scanner.Err(); err != nil {
+	// 	// 	panic(err)
+	// 	// }
+	// }()
+
+	// if err := cmd.Wait(); err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
