@@ -55,7 +55,11 @@
 
 	<div class="flex gap-4">
 		<div class="flex flex-1 flex-col gap-2">
-			<p class="text-sm text-muted-foreground">{prettyBytes(appState.rate)}/s</p>
+			<p class="text-sm text-muted-foreground">
+				{prettyBytes(appState.bytesWritten)} / {prettyBytes(appState.file?.size)} ({prettyBytes(
+					appState.rate
+				)}/s)
+			</p>
 			<Progress value={appState.bytesWritten} max={appState.drive?.size_bytes} />
 		</div>
 
