@@ -60,7 +60,7 @@
 					appState.rate
 				)}/s)
 			</p>
-			<Progress value={appState.bytesWritten} max={appState.drive?.size_bytes} />
+			<Progress value={appState.bytesWritten} max={appState.file?.size} />
 		</div>
 
 		<Button disabled>Finish</Button>
