@@ -35,7 +35,7 @@ func Flash(filePath string, drivePath string, progressCh chan int) (hash.Hash64,
 
 	hash := crc64.New(crc64.MakeTable(crc64.ISO))
 	progress := &ProgressWriter{Channel: progressCh}
-	writer := io.MultiWriter(drive, hash, progress)
+	auxWriter := io.MultiWriter(hash, progress)
 
 	for {
 		readN, err := io.ReadFull(file, block)
@@ -45,10 +45,31 @@ func Flash(filePath string, drivePath string, progressCh chan int) (hash.Hash64,
 			return nil, err
 		}
 
-		_, err = writer.Write(block[:readN])
+		if readN < len(block) {
+			clear(block[readN:])
+		}
+
+		// If we read a partial block, we should round down to the minimum required block size to handle an edge case where the end of the disk is smaller than our default buffer size
+		writeSize := readN
+		if readN%directio.BlockSize != 0 {
+			writeSize = ((readN / directio.BlockSize) + 1) * directio.BlockSize
+		}
+
+		// We must write the full block to the drive, whereas the hash and progress only get the valid data
+		_, err = drive.Write(block[:writeSize])
 		if err != nil {
 			return nil, err
 		}
+
+		_, err = auxWriter.Write(block[:readN])
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	err = drive.Sync()
+	if err != nil {
+		return nil, err
 	}
 
 	return hash, nil
@@ -87,7 +108,7 @@ func Verify(hash hash.Hash64, size uint64, drivePath string, progressCh chan int
 			return false, err
 		}
 
-		if readCount > size {
+		if readCount >= size {
 			break
 		}
 	}

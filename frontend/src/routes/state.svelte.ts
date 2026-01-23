@@ -7,12 +7,14 @@ export const appState: {
 	bytesWritten: number;
 	rate: number;
 	finished: boolean;
+	stage: string;
 } = $state({
 	file: null,
 	drive: null,
 	bytesWritten: 0,
 	rate: 0,
-	finished: false
+	finished: false,
+	stage: 'flash'
 });
 
 export function resetAppState() {
@@ -21,13 +23,20 @@ export function resetAppState() {
 	appState.bytesWritten = 0;
 	appState.rate = 0;
 	appState.finished = false;
+	appState.stage = 'flash';
 }
 
 let bytesWritten = 0;
 
 EventsOn('progress', (data) => {
-	appState.bytesWritten += JSON.parse(data).written;
-	bytesWritten += JSON.parse(data).written;
+	const parsedData = JSON.parse(data);
+	if (parsedData.stage != appState.stage) {
+		appState.stage = parsedData.stage;
+		appState.bytesWritten = 0;
+		bytesWritten = 0;
+	}
+	appState.bytesWritten += parsedData.written;
+	bytesWritten += parsedData.written;
 });
 
 setInterval(() => {
