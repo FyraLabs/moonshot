@@ -1,43 +1,100 @@
 package lib
 
 import (
+	"hash"
+	"hash/crc64"
 	"io"
 	"os"
 
 	"github.com/ncw/directio"
 )
 
-func Flash(filePath string, drivePath string, progressCh chan int) error {
+type ProgressWriter struct {
+	Channel chan int
+}
+
+func (p *ProgressWriter) Write(b []byte) (int, error) {
+	p.Channel <- len(b)
+	return len(b), nil
+}
+
+func Flash(filePath string, drivePath string, progressCh chan int) (hash.Hash64, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer file.Close()
 
 	drive, err := directio.OpenFile(drivePath, os.O_WRONLY, 0666)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer drive.Close()
 
 	block := directio.AlignedBlock(directio.BlockSize * 256)
 
+	hash := crc64.New(crc64.MakeTable(crc64.ISO))
+	progress := &ProgressWriter{Channel: progressCh}
+	writer := io.MultiWriter(drive, hash, progress)
+
 	for {
-		_, err := io.ReadFull(file, block)
-		if err == io.EOF || err == io.ErrUnexpectedEOF {
+		readN, err := io.ReadFull(file, block)
+		if err == io.EOF {
 			break
-		}
-		if err != nil {
-			return err
-		}
-
-		n, err := drive.Write(block)
-		if err != nil {
-			return err
+		} else if err != nil && err != io.ErrUnexpectedEOF {
+			return nil, err
 		}
 
-		progressCh <- n
+		_, err = writer.Write(block[:readN])
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	return nil
+	return hash, nil
+}
+
+func Verify(hash hash.Hash64, size uint64, drivePath string, progressCh chan int) (bool, error) {
+	drive, err := directio.OpenFile(drivePath, os.O_RDONLY, 0666)
+	if err != nil {
+		return false, err
+	}
+	defer drive.Close()
+
+	block := directio.AlignedBlock(directio.BlockSize * 256)
+
+	diskHash := crc64.New(crc64.MakeTable(crc64.ISO))
+	progress := &ProgressWriter{Channel: progressCh}
+	writer := io.MultiWriter(diskHash, progress)
+
+	readCount := uint64(0)
+
+	for {
+		readN, err := io.ReadFull(drive, block)
+		if err == io.EOF {
+			break
+		} else if err != nil && err != io.ErrUnexpectedEOF {
+			return false, err
+		}
+
+		readCount += uint64(readN)
+		if readCount > size {
+			readN -= int(readCount - size)
+		}
+
+		_, err = writer.Write(block[:readN])
+		if err != nil {
+			return false, err
+		}
+
+		if readCount > size {
+			break
+		}
+	}
+
+	if diskHash.Sum64() != hash.Sum64() {
+		return false, nil
+	}
+
+	return true, nil
 }

@@ -131,14 +131,6 @@ func (a *App) FlashDrive(filePath string, drivePath string) error {
 	cmd := util.RunAsRoot([]string{exe, "flash", filePath, drivePath})
 	cmd.Stderr = os.Stderr
 
-	// b, err := cmd.CombinedOutput()
-	// if err != nil {
-	// 	println(string(b))
-	// 	println("Error:", err.Error())
-	// 	return err
-	// }
-	// println(string(b))
-
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return err
