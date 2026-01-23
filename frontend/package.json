@@ -44,6 +44,7 @@
 	},
 	"dependencies": {
 		"mode-watcher": "^1.1.0",
-		"pretty-bytes": "^7.1.0"
+		"pretty-bytes": "^7.1.0",
+		"runed": "^0.37.1"
 	}
 }

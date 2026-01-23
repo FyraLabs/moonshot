@@ -10,9 +10,10 @@
 	import { appState } from '../state.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { resolve } from '$app/paths';
+	import { showAllDrives } from '../settings.svelte';
 
 	let drives: Awaited<ReturnType<typeof ListDrives>> = $state([]);
-	let selectableDrives = $derived(drives.filter((d) => d.removable));
+	let selectableDrives = $derived(drives.filter((d) => showAllDrives.current || d.removable));
 
 	onMount(async () => {
 		drives = await ListDrives();
