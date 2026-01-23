@@ -1,10 +1,12 @@
 <script>
 	import { Progress } from '$lib/components/ui/progress';
 	import prettyBytes from 'pretty-bytes';
-	import { appState } from '../state.svelte';
+	import { appState, resetAppState } from '../state.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button';
 	import { BrowserOpenURL } from '$lib/wailsjs/runtime/runtime';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -69,13 +71,19 @@
 	<div class="flex gap-4">
 		<div class="flex flex-1 flex-col gap-2">
 			<p class="text-sm text-muted-foreground">
-				{prettyBytes(appState.bytesWritten)} / {prettyBytes(appState.file?.size)} ({prettyBytes(
+				{prettyBytes(appState.bytesWritten)} / {prettyBytes(appState.file?.size ?? 0)} ({prettyBytes(
 					appState.rate
 				)}/s)
 			</p>
 			<Progress value={appState.bytesWritten} max={appState.file?.size} />
 		</div>
 
-		<Button disabled>Finish</Button>
+		<Button
+			onclick={() => {
+				resetAppState();
+				goto(resolve('/'));
+			}}
+			disabled={!appState.finished}>Finish</Button
+		>
 	</div>
 </div>

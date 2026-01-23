@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowRight, HardDrive, File, ArrowDown } from '@lucide/svelte';
+	import { HardDrive, File, ArrowDown } from '@lucide/svelte';
 	import { appState } from '../state.svelte';
 	import prettyBytes from 'pretty-bytes';
 	import { FlashDrive } from '$lib/wailsjs/go/main/App';
+	import { resolve } from '$app/paths';
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -32,13 +33,16 @@
 	</div>
 
 	<div class="ml-auto flex gap-3">
-		<Button class="min-w-28" onclick={() => goto('/drives')} variant="outline">Back</Button>
+		<Button class="min-w-28" onclick={() => goto(resolve('/drives'))} variant="outline">Back</Button
+		>
 		<Button
 			class="min-w-28"
 			disabled={false}
 			onclick={() => {
-				FlashDrive(appState.file.path, '/dev/sda');
-				goto('/progress');
+				FlashDrive(appState.file.path, '/dev/sda').finally(() => {
+					appState.finished = true;
+				});
+				goto(resolve('/progress'));
 			}}
 			variant="destructive">Confirm</Button
 		>

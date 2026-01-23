@@ -6,12 +6,22 @@ export const appState: {
 	drive: Awaited<ReturnType<typeof ListDrives>>[0] | null;
 	bytesWritten: number;
 	rate: number;
+	finished: boolean;
 } = $state({
 	file: null,
 	drive: null,
 	bytesWritten: 0,
-	rate: 0
+	rate: 0,
+	finished: false
 });
+
+export function resetAppState() {
+	appState.file = null;
+	appState.drive = null;
+	appState.bytesWritten = 0;
+	appState.rate = 0;
+	appState.finished = false;
+}
 
 let bytesWritten = 0;
 
