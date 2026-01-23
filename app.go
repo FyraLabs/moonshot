@@ -29,11 +29,6 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
 type SourceFile struct {
 	Path     string `json:"path"`
 	Basename string `json:"basename"`
@@ -122,13 +117,13 @@ func (a *App) ListDrives() ([]Drive, error) {
 	return drives, nil
 }
 
-func (a *App) FlashDrive(filePath string, drivePath string) error {
+func (a *App) FlashDrive(filePath string, driveName string) error {
 	exe, err := os.Executable()
 	if err != nil {
 		return err
 	}
 
-	cmd := util.RunAsRoot([]string{exe, "flash", filePath, drivePath})
+	cmd := util.RunAsRoot([]string{exe, "flash", filePath, util.GetDrivePath(driveName)})
 	cmd.Stderr = os.Stderr
 
 	stdout, err := cmd.StdoutPipe()

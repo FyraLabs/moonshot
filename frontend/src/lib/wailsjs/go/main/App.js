@@ -6,10 +6,6 @@ export function FlashDrive(arg1, arg2) {
   return window['go']['main']['App']['FlashDrive'](arg1, arg2);
 }
 
-export function Greet(arg1) {
-  return window['go']['main']['App']['Greet'](arg1);
-}
-
 export function ListDrives() {
   return window['go']['main']['App']['ListDrives']();
 }

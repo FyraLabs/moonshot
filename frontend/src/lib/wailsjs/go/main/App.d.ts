@@ -4,8 +4,6 @@ import {main} from '../models';
 
 export function FlashDrive(arg1:string,arg2:string):Promise<void>;
 
-export function Greet(arg1:string):Promise<string>;
-
 export function ListDrives():Promise<Array<main.Drive>>;
 
 export function SelectFile(arg1:any):Promise<main.SourceFile>;

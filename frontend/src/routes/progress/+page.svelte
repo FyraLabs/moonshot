@@ -7,6 +7,9 @@
 	import { BrowserOpenURL } from '$lib/wailsjs/runtime/runtime';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { Throttled } from 'runed';
+
+	const throttledbytesWritten = new Throttled(() => appState.bytesWritten, 100);
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -82,7 +85,7 @@
 			</p>
 			{#key appState.stage}
 				<!-- TODO: This gets really weird at high speeds -->
-				<Progress value={(appState.bytesWritten / appState.file?.size) * 100} />
+				<Progress value={throttledbytesWritten.current} max={appState.file?.size} />
 			{/key}
 		</div>
 

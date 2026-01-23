@@ -40,7 +40,7 @@
 			disabled={false}
 			onclick={() => {
 				// TODO: do not hardcode
-				FlashDrive(appState.file.path, '/dev/sda').finally(() => {
+				FlashDrive(appState.file.path, appState.drive?.name).finally(() => {
 					appState.finished = true;
 				});
 				goto(resolve('/progress'));

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"moonshot/lib"
+	"moonshot/util"
 	"os"
 )
 
@@ -14,6 +15,9 @@ type Message struct {
 }
 
 func flash() error {
+	filePath := os.Args[2]
+	drivePath := os.Args[3]
+
 	stage := "flash"
 	ch := make(chan int)
 	go func() {
@@ -27,18 +31,22 @@ func flash() error {
 		}
 	}()
 
-	stat, err := os.Stat(os.Args[2])
+	stat, err := os.Stat(filePath)
 	if err != nil {
 		return err
 	}
 
-	hash, err := lib.Flash(os.Args[2], os.Args[3], ch)
+	hash, err := lib.Flash(filePath, drivePath, ch)
 	if err != nil {
 		return err
 	}
 
 	stage = "verify"
-	if ok, err := lib.Verify(hash, uint64(stat.Size()), os.Args[3], ch); !ok {
+	if ok, err := lib.Verify(hash, uint64(stat.Size()), drivePath, ch); !ok {
+		return err
+	}
+
+	if err := util.Eject(drivePath); err != nil {
 		return err
 	}
 
