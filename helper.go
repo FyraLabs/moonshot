@@ -26,9 +26,26 @@ func flash() {
 		}
 	}()
 
-	if err := lib.Flash(os.Args[2], os.Args[3], ch); err != nil {
+	stat, err := os.Stat(os.Args[2])
+	if err != nil {
 		println("Error:", err.Error())
 		os.Exit(1)
 	}
+
+	hash, err := lib.Flash(os.Args[2], os.Args[3], ch)
+	if err != nil {
+		println("Error:", err.Error())
+		os.Exit(1)
+	}
+
+	if ok, err := lib.Verify(hash, uint64(stat.Size()), os.Args[3], ch); !ok {
+		if err != nil {
+			println("Error:", err.Error())
+		} else {
+			println("Hash mismatch")
+		}
+		os.Exit(1)
+	}
+
 	os.Exit(0)
 }
