@@ -26,7 +26,6 @@
 
 	<div class="flex-1">
 		<Table.Root>
-			<!-- <Table.Caption>A list of your recent invoices.</Table.Caption> -->
 			<Table.Header>
 				<Table.Row>
 					<Table.Head></Table.Head>
@@ -37,17 +36,17 @@
 			</Table.Header>
 			<Table.Body>
 				{#each selectableDrives as drive (drive)}
-					<Table.Row>
+					<Table.Row onclick={() => (appState.drive = appState.drive === drive ? null : drive)}>
 						<Table.Cell
 							><Checkbox
 								checked={appState.drive?.name === drive.name}
 								onCheckedChange={(v) => (appState.drive = v ? drive : null)}
+								onclick={(e) => e.stopPropagation()}
 							/></Table.Cell
 						>
 						<Table.Cell class="font-medium">{drive.name}</Table.Cell>
 						<Table.Cell>{drive.model}</Table.Cell>
 						<Table.Cell>{prettyBytes(drive.size_bytes)}</Table.Cell>
-						<!-- <Table.Cell class="text-end">$250.00</Table.Cell> -->
 					</Table.Row>
 				{/each}
 			</Table.Body>

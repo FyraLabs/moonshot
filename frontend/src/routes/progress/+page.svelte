@@ -4,6 +4,7 @@
 	import { appState } from '../state.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button';
+	import { BrowserOpenURL } from '$lib/wailsjs/runtime/runtime';
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -17,8 +18,8 @@
 	<div class="grid flex-1 grid-cols-2 grid-rows-2 gap-4">
 		<Card.Root class="row-span-2">
 			<Card.Header>
-				<Card.Title>Card Title</Card.Title>
-				<Card.Description>Card Description</Card.Description>
+				<Card.Title>Need help?</Card.Title>
+				<Card.Description>Join our Discord server!</Card.Description>
 			</Card.Header>
 			<!-- <Card.Content>
 				<p>Card Content</p>
@@ -26,11 +27,17 @@
 			<Card.Footer>
 				<p>Card Footer</p>
 			</Card.Footer> -->
+			<Card.Footer class="mt-auto flex gap-2">
+				<!-- <p>Card Footer</p> -->
+				<Button onclick={() => BrowserOpenURL('https://fyralabs.com/discord')}>Join Discord</Button>
+			</Card.Footer>
 		</Card.Root>
 		<Card.Root>
 			<Card.Header>
-				<Card.Title>Card Title</Card.Title>
-				<Card.Description>Card Description</Card.Description>
+				<Card.Title>Sponsored thing</Card.Title>
+				<Card.Description
+					>Our sponsor is very sigma. Get $67 off of your Labubu when you use code ohio.</Card.Description
+				>
 			</Card.Header>
 			<!-- <Card.Content>
 				<p>Card Content</p>
@@ -42,14 +49,20 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>Love Moonshot?</Card.Title>
-				<Card.Description>Support Moonshot on our GitHub Sponsors!</Card.Description>
+				<Card.Description>Moonshot is a project of Fyra Labs.</Card.Description>
 			</Card.Header>
 			<!-- <Card.Content>
 				<p>Card Content</p>
-			</Card.Content>
-			<Card.Footer>
-				<p>Card Footer</p>
-			</Card.Footer> -->
+			</Card.Content> -->
+			<Card.Footer class="mt-auto flex gap-2">
+				<!-- <p>Card Footer</p> -->
+				<Button onclick={() => BrowserOpenURL('https://github.com/sponsors/FyraLabs')}
+					>Sponsor</Button
+				>
+				<Button variant="secondary" onclick={() => BrowserOpenURL('https://fyralabs.com')}
+					>About us</Button
+				>
+			</Card.Footer>
 		</Card.Root>
 	</div>
 
