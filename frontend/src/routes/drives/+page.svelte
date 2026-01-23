@@ -7,6 +7,7 @@
 	import prettyBytes from 'pretty-bytes';
 	import { onMount } from 'svelte';
 	import { appState } from '../state.svelte';
+	import Badge from '$lib/components/ui/badge/badge.svelte';
 
 	let drives: Awaited<ReturnType<typeof ListDrives>> = $state([]);
 	let selectableDrives = $derived(drives.filter((d) => d.removable));
@@ -14,6 +15,10 @@
 	onMount(async () => {
 		drives = await ListDrives();
 	});
+
+	function validDrive(drive: Drive) {
+		return (appState.file?.size ?? 0) <= drive.capacity;
+	}
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -32,21 +37,38 @@
 					<Table.Head class="w-[100px]">ID</Table.Head>
 					<Table.Head>Model</Table.Head>
 					<Table.Head>Size</Table.Head>
+					<Table.Head></Table.Head>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
 				{#each selectableDrives as drive (drive)}
-					<Table.Row onclick={() => (appState.drive = appState.drive === drive ? null : drive)}>
+					<Table.Row
+						onclick={() => {
+							if (!validDrive(drive)) return;
+							appState.drive = appState.drive === drive ? null : drive;
+						}}
+					>
 						<Table.Cell
 							><Checkbox
 								checked={appState.drive?.name === drive.name}
 								onCheckedChange={(v) => (appState.drive = v ? drive : null)}
 								onclick={(e) => e.stopPropagation()}
+								disabled={!validDrive(drive)}
 							/></Table.Cell
 						>
 						<Table.Cell class="font-medium">{drive.name}</Table.Cell>
 						<Table.Cell>{drive.model}</Table.Cell>
-						<Table.Cell>{prettyBytes(drive.size_bytes)}</Table.Cell>
+						<Table.Cell class={!validDrive(drive) ? 'text-destructive' : ''}
+							>{prettyBytes(drive.capacity)}</Table.Cell
+						>
+						<Table.Cell class="text-end">
+							{#if !validDrive(drive)}
+								<Badge variant="destructive">Insufficient Space</Badge>
+							{/if}
+							{#if !drive.removable}
+								<Badge variant="destructive">Internal Drive</Badge>
+							{/if}
+						</Table.Cell>
 					</Table.Row>
 				{/each}
 			</Table.Body>

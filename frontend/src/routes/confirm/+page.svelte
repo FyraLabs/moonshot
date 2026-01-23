@@ -27,7 +27,7 @@
 		<div class="flex flex-col items-center gap-2">
 			<HardDrive />
 			<p>
-				{appState.drive.model} ({appState.drive?.name}, {prettyBytes(appState.drive?.size_bytes)})
+				{appState.drive.model} ({appState.drive?.name}, {prettyBytes(appState.drive?.capacity)})
 			</p>
 		</div>
 	</div>

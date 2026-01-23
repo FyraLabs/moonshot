@@ -10,7 +10,6 @@ import (
 
 	"github.com/diskfs/go-diskfs/partition/gpt"
 	"github.com/jaypipes/ghw"
-	"github.com/jaypipes/ghw/pkg/block"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -96,12 +95,13 @@ func (a *App) SelectFile(filepath *string) (*SourceFile, error) {
 
 type Drive struct {
 	Name      string `json:"name"`
+	Model     string `json:"model"`
 	Capacity  uint64 `json:"capacity"`
 	Path      string `json:"path"`
 	Removable bool   `json:"removable"`
 }
 
-func (a *App) ListDrives() ([]*block.Disk, error) {
+func (a *App) ListDrives() ([]Drive, error) {
 	block, err := ghw.Block()
 	if err != nil {
 		fmt.Printf("Error getting block storage info: %v", err)
@@ -112,13 +112,14 @@ func (a *App) ListDrives() ([]*block.Disk, error) {
 	for _, disk := range block.Disks {
 		drives = append(drives, Drive{
 			Name:      disk.Name,
+			Model:     disk.Model,
 			Capacity:  disk.SizeBytes,
 			Path:      disk.BusPath,
 			Removable: disk.IsRemovable,
 		})
 	}
 
-	return block.Disks, nil
+	return drives, nil
 }
 
 func (a *App) FlashDrive(filePath string, drivePath string) error {
