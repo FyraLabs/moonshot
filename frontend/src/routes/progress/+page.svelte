@@ -71,11 +71,19 @@
 	<div class="flex gap-4">
 		<div class="flex flex-1 flex-col gap-2">
 			<p class="text-sm text-muted-foreground">
+				{#if appState.stage === 'flash'}
+					Flashing:
+				{:else if appState.stage === 'verify'}
+					Verifying:
+				{/if}
 				{prettyBytes(appState.bytesWritten)} / {prettyBytes(appState.file?.size ?? 0)} ({prettyBytes(
 					appState.rate
 				)}/s)
 			</p>
-			<Progress value={appState.bytesWritten} max={appState.file?.size} />
+			{#key appState.stage}
+				<!-- TODO: This gets really weird at high speeds -->
+				<Progress value={(appState.bytesWritten / appState.file?.size) * 100} />
+			{/key}
 		</div>
 
 		<Button

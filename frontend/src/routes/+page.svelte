@@ -9,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import { appState } from './state.svelte';
 	import * as Alert from '$lib/components/ui/alert/index.js';
+	import { resolve } from '$app/paths';
 
 	onMount(() => {
 		OnFileDrop(async (_x, _y, paths) => {
@@ -72,7 +73,9 @@
 		</div>
 	</button>
 
-	<Button class="ml-auto min-w-28" disabled={!appState.file} onclick={() => goto('/drives')}
-		>Next</Button
+	<Button
+		class="ml-auto min-w-28"
+		disabled={!appState.file}
+		onclick={() => goto(resolve('/drives'))}>Next</Button
 	>
 </div>

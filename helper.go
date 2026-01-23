@@ -13,7 +13,7 @@ type Message struct {
 	End     bool   `json:"end"`
 }
 
-func flash() {
+func flash() error {
 	stage := "flash"
 	ch := make(chan int)
 	go func() {
@@ -21,7 +21,6 @@ func flash() {
 			msg := Message{Stage: stage, Written: n, End: false}
 			bytes, err := json.Marshal(msg)
 			if err != nil {
-				println("Error:", err.Error())
 				os.Exit(1)
 			}
 			fmt.Println(string(bytes))
@@ -30,25 +29,18 @@ func flash() {
 
 	stat, err := os.Stat(os.Args[2])
 	if err != nil {
-		println("Error:", err.Error())
-		os.Exit(1)
+		return err
 	}
 
 	hash, err := lib.Flash(os.Args[2], os.Args[3], ch)
 	if err != nil {
-		println("Error:", err.Error())
-		os.Exit(1)
+		return err
 	}
 
 	stage = "verify"
 	if ok, err := lib.Verify(hash, uint64(stat.Size()), os.Args[3], ch); !ok {
-		if err != nil {
-			println("Error:", err.Error())
-		} else {
-			println("Hash mismatch")
-		}
-		os.Exit(1)
+		return err
 	}
 
-	os.Exit(0)
+	return nil
 }

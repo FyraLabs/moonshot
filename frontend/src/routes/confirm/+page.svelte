@@ -39,6 +39,7 @@
 			class="min-w-28"
 			disabled={false}
 			onclick={() => {
+				// TODO: do not hardcode
 				FlashDrive(appState.file.path, '/dev/sda').finally(() => {
 					appState.finished = true;
 				});

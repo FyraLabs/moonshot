@@ -4,10 +4,12 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { ListDrives } from '$lib/wailsjs/go/main/App';
+	import { main } from '$lib/wailsjs/go/models';
 	import prettyBytes from 'pretty-bytes';
 	import { onMount } from 'svelte';
 	import { appState } from '../state.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import { resolve } from '$app/paths';
 
 	let drives: Awaited<ReturnType<typeof ListDrives>> = $state([]);
 	let selectableDrives = $derived(drives.filter((d) => d.removable));
@@ -16,8 +18,8 @@
 		drives = await ListDrives();
 	});
 
-	function validDrive(drive: Drive) {
-		return (appState.file?.size ?? 0) <= drive.capacity;
+	function validDrive(drive: main.Drive): boolean {
+		return Math.ceil(appState.file!.size / 512) * 512 <= drive.capacity;
 	}
 </script>
 
@@ -76,8 +78,8 @@
 	</div>
 
 	<div class="ml-auto flex gap-3">
-		<Button class="min-w-28" onclick={() => goto('/')} variant="outline">Back</Button>
-		<Button class="min-w-28" disabled={!appState.drive} onclick={() => goto('/confirm')}
+		<Button class="min-w-28" onclick={() => goto(resolve('/'))} variant="outline">Back</Button>
+		<Button class="min-w-28" disabled={!appState.drive} onclick={() => goto(resolve('/confirm'))}
 			>Next</Button
 		>
 	</div>
