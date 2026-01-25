@@ -2,11 +2,14 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"moonshot/util"
 	"os"
+	"os/exec"
 
 	"github.com/diskfs/go-diskfs/partition/gpt"
 	"github.com/jaypipes/ghw"
@@ -134,7 +137,10 @@ func (a *App) FlashDrive(filePath string, driveName string, eject bool) error {
 	if err != nil {
 		return err
 	}
-	cmd.Stderr = os.Stderr
+
+	var stderrBuf bytes.Buffer
+
+	cmd.Stderr = &stderrBuf
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -156,6 +162,10 @@ func (a *App) FlashDrive(filePath string, driveName string, eject bool) error {
 	}
 
 	if err := cmd.Wait(); err != nil {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			return errors.New(stderrBuf.String())
+		}
 		return err
 	}
 

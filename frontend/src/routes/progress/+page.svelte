@@ -21,15 +21,6 @@
 	</div>
 
 	<div class="flex flex-1 flex-wrap gap-4">
-		<!-- <Card.Root class="row-span-2">
-			<Card.Header>
-				<Card.Title>Need help?</Card.Title>
-				<Card.Description>Join our Discord server!</Card.Description>
-			</Card.Header>
-			<Card.Footer class="mt-auto flex gap-2">
-				<Button onclick={() => BrowserOpenURL('https://fyralabs.com/discord')}>Join Discord</Button>
-			</Card.Footer>
-		</Card.Root> -->
 		<Card.Root class="flex-1">
 			<Card.Header>
 				<Card.Title>Sponsored thing</Card.Title>
@@ -37,21 +28,12 @@
 					>Our sponsor is very sigma. Get $67 off of your Labubu when you use code ohio.</Card.Description
 				>
 			</Card.Header>
-			<!-- <Card.Content>
-				<p>Card Content</p>
-			</Card.Content>
-			<Card.Footer>
-				<p>Card Footer</p>
-			</Card.Footer> -->
 		</Card.Root>
 		<Card.Root class="flex-1">
 			<Card.Header>
 				<Card.Title>Love Moonshot?</Card.Title>
 				<Card.Description>Moonshot is a project of Fyra Labs.</Card.Description>
 			</Card.Header>
-			<!-- <Card.Content>
-				<p>Card Content</p>
-			</Card.Content> -->
 			<Card.Footer class="mt-auto flex gap-2">
 				<Button onclick={() => BrowserOpenURL('https://github.com/sponsors/FyraLabs')}
 					>Sponsor</Button

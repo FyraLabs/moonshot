@@ -6,6 +6,7 @@
 	import prettyBytes from 'pretty-bytes';
 	import { FlashDrive } from '$lib/wailsjs/go/main/App';
 	import { resolve } from '$app/paths';
+	import { toast } from 'svelte-sonner';
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -39,12 +40,18 @@
 			class="min-w-28"
 			disabled={false}
 			onclick={() => {
-				// TODO: do not hardcode
-				FlashDrive(appState.file.path, appState.drive?.name, appState.drive?.removable).finally(
-					() => {
+				FlashDrive(appState.file.path, appState.drive?.name, appState.drive?.removable)
+					.catch((e) =>
+						toast(`Error flashing drive: ${e.message ?? e}`, {
+							type: 'error',
+							richColors: true,
+							duration: Infinity,
+							closeButton: true
+						})
+					)
+					.finally(() => {
 						appState.finished = true;
-					}
-				);
+					});
 				goto(resolve('/progress'));
 			}}
 			variant="destructive">Confirm</Button
