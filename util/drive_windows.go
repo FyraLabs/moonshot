@@ -3,12 +3,7 @@
 package util
 
 import (
-	"bytes"
-	"fmt"
 	"os"
-	"os/exec"
-	"strconv"
-	"strings"
 
 	"golang.org/x/sys/windows"
 )
@@ -27,21 +22,12 @@ const (
 )
 
 func PrepareDrive(driveFile *os.File) error {
-	driveNumber, err := strconv.Atoi(strings.TrimPrefix(strings.ToUpper(driveFile.Name()), `\\.\PHYSICALDRIVE`))
-	if err != nil {
-		return err
-	}
-
-	cmd := exec.Command("diskpart")
-	cmd.Stdin = bytes.NewBufferString(fmt.Sprintf("select disk %d\nclean\nrescan", driveNumber))
-	if err := cmd.Run(); err != nil {
-		return err
-	}
-
+	// I'm not 100% sure if this is correct, but locking and dismounting the drive seems to allow the write calls to succeed.
+	// Thanks Gemini for saving me from shoveling through Microsoft's shitty documentation.
 	handle := windows.Handle(driveFile.Fd())
 
 	var bytesReturned uint32
-	err = windows.DeviceIoControl(
+	err := windows.DeviceIoControl(
 		handle,
 		FSCTL_LOCK_VOLUME,
 		nil, 0,
