@@ -5,6 +5,9 @@ package util
 import (
 	"os"
 	"os/exec"
+	"path/filepath"
+
+	"github.com/ncw/directio"
 )
 
 func GetDrivePath(name string) string {
@@ -20,6 +23,20 @@ func Eject(drivePath string) error {
 	return nil
 }
 
-func PrepareDrive(driveFile *os.File) error {
-	return nil
+func OpenDriveForFlash(drivePath string) (*os.File, error) {
+	matches, err := filepath.Glob(drivePath + "*")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, match := range matches {
+		_ = exec.Command("umount", match).Run()
+	}
+
+	drive, err := directio.OpenFile(drivePath, os.O_WRONLY|os.O_EXCL, 0666)
+	if err != nil {
+		return nil, err
+	}
+
+	return drive, nil
 }

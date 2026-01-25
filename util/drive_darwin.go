@@ -6,6 +6,8 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+
+	"github.com/ncw/directio"
 )
 
 func GetDrivePath(name string) string {
@@ -27,6 +29,16 @@ func Eject(drivePath string) error {
 	return nil
 }
 
-func PrepareDrive(driveFile *os.File) error {
-	return nil
+func OpenDriveForFlash(drivePath string) (*os.File, error) {
+	cmd := exec.Command("diskutil", "unmountDisk", drivePath)
+	if err := cmd.Run(); err != nil {
+		return nil, err
+	}
+
+	drive, err := directio.OpenFile(drivePath, os.O_WRONLY, 0666)
+	if err != nil {
+		return nil, err
+	}
+
+	return drive, err
 }
