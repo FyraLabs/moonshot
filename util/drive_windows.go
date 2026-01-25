@@ -3,7 +3,7 @@
 package util
 
 func GetDrivePath(name string) string {
-	return name + ":\\"
+	return name
 }
 
 func Eject(drivePath string) error {
