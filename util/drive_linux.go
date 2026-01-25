@@ -18,3 +18,7 @@ func Eject(drivePath string) error {
 
 	return nil
 }
+
+func PrepareDrive(drivePath string) error {
+	return nil
+}
