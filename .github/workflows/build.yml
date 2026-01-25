@@ -16,7 +16,7 @@ jobs:
           check-latest: true
       - name: Install System Dependencies
         if: matrix.os == 'ubuntu-latest'
-        run: apt-get update && apt-get install -y libwebkit2gtk-4.1-dev
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - name: Build Application
