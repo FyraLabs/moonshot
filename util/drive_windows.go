@@ -19,7 +19,7 @@ func Eject(drivePath string) error {
 }
 
 func PrepareDrive(drivePath string) error {
-	driveNumber, err := strconv.Atoi(strings.TrimPrefix(drivePath, `\\.\PhysicalDrive`))
+	driveNumber, err := strconv.Atoi(strings.TrimPrefix(strings.ToUpper(drivePath), `\\.\PHYSICALDRIVE`))
 	if err != nil {
 		return err
 	}
