@@ -31,5 +31,5 @@ jobs:
         run: wails build --tags webkit2_41 --platform ${{ matrix.variants.platform }}
       - uses: actions/upload-artifact@v6
         with:
-          name: moonshot-${{ matrix.runner }}
+          name: moonshot-${{ matrix.variants.runner }}
           path: build/bin
