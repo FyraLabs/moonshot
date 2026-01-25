@@ -3,13 +3,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - name: Build Application
-        run: wails build -platform darwin/universal,windows/amd64,windows/arm64,linux/amd64,linux/arm64
-      - name: Check
-        run: ls -la build/bin
+        run: wails build --platform ${{ matrix.os == 'windows-latest' && 'windows/amd64,windows/arm64' || matrix.os == 'macos-latest' && 'darwin/universal' || 'linux/amd64,linux/arm64' }}
+      - uses: actions/upload-artifact@v6
+        with:
+          name: moonshot-${{ matrix.os }}
+          path: build/bin
