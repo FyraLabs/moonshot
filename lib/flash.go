@@ -5,6 +5,7 @@ import (
 	"hash"
 	"hash/crc64"
 	"io"
+	"moonshot/util"
 	"os"
 	"syscall"
 
@@ -26,6 +27,10 @@ func Flash(filePath string, drivePath string, progressCh chan int) (hash.Hash64,
 		return nil, err
 	}
 	defer file.Close()
+
+	if err := util.PrepareDrive(file); err != nil {
+		return nil, err
+	}
 
 	drive, err := directio.OpenFile(drivePath, os.O_WRONLY, 0666)
 	if err != nil {

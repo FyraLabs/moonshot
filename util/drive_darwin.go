@@ -4,6 +4,7 @@ package util
 
 import (
 	"errors"
+	"os"
 	"os/exec"
 )
 
@@ -26,6 +27,6 @@ func Eject(drivePath string) error {
 	return nil
 }
 
-func PrepareDrive(drivePath string) error {
+func PrepareDrive(driveFile *os.File) error {
 	return nil
 }

@@ -36,10 +36,6 @@ func flash() error {
 		}
 	}()
 
-	if err := util.PrepareDrive(drivePath); err != nil {
-		return err
-	}
-
 	stat, err := os.Stat(filePath)
 	if err != nil {
 		return err
