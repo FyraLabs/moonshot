@@ -28,15 +28,15 @@ func Flash(filePath string, drivePath string, progressCh chan int) (hash.Hash64,
 	}
 	defer file.Close()
 
-	if err := util.PrepareDrive(file); err != nil {
-		return nil, err
-	}
-
 	drive, err := directio.OpenFile(drivePath, os.O_WRONLY, 0666)
 	if err != nil {
 		return nil, err
 	}
 	defer drive.Close()
+
+	if err := util.PrepareDrive(drive); err != nil {
+		return nil, err
+	}
 
 	block := directio.AlignedBlock(directio.BlockSize * 256)
 
