@@ -3,9 +3,7 @@
 package util
 
 import (
-	"errors"
 	"os/exec"
-	"syscall"
 )
 
 func GetDrivePath(name string) string {
@@ -13,12 +11,9 @@ func GetDrivePath(name string) string {
 }
 
 func Eject(drivePath string) error {
-	// Attempt to eject the drive, if that fails, try to unmount it
-	error := exec.Command("eject", drivePath).Run()
-	if errors.Is(error, &exec.ExitError{}) {
-		return syscall.Unmount(drivePath, syscall.MNT_DETACH)
-	} else if error != nil {
-		return error
+	err := exec.Command("eject", drivePath).Run()
+	if err != nil {
+		return err
 	}
 
 	return nil

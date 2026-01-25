@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"moonshot/lib"
 	"moonshot/util"
@@ -15,8 +16,12 @@ type Message struct {
 }
 
 func flash() error {
-	filePath := os.Args[2]
-	drivePath := os.Args[3]
+	fs := flag.NewFlagSet("flash", flag.ContinueOnError)
+	eject := fs.Bool("eject", false, "Eject drive after flashing")
+	fs.Parse(os.Args[2:])
+
+	filePath := fs.Arg(0)
+	drivePath := fs.Arg(1)
 
 	stage := "flash"
 	ch := make(chan int)
@@ -46,8 +51,10 @@ func flash() error {
 		return err
 	}
 
-	if err := util.Eject(drivePath); err != nil {
-		return err
+	if *eject {
+		if err := util.Eject(drivePath); err != nil {
+			return err
+		}
 	}
 
 	return nil

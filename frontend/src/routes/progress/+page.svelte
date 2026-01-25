@@ -88,10 +88,7 @@
 					appState.rate
 				)}/s)
 			</p>
-			{#key appState.stage}
-				<!-- TODO: This gets really weird at high speeds -->
-				<Progress value={throttledbytesWritten.current} max={appState.file?.size} />
-			{/key}
+			<Progress value={throttledbytesWritten.current} max={appState.file?.size} />
 		</div>
 
 		<Button

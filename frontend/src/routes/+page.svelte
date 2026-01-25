@@ -16,7 +16,7 @@
 			if (appState.file) return;
 			if (paths.length > 0) {
 				const imagePath = paths[0];
-				if (!/^.+(\.raw|\.iso|\.img|\.img\..+)$/.test(imagePath)) return;
+				if (!/^.+(\.raw|\.iso|\.img)$/.test(imagePath)) return;
 				appState.file = await SelectFile(paths[0]);
 			}
 		}, false);

@@ -3,12 +3,36 @@
 package util
 
 import (
-	"fmt"
+	_ "embed"
+	"os"
 	"os/exec"
-	"strings"
 )
 
-func RunAsRoot(command []string) *exec.Cmd {
-	script := fmt.Sprintf(`do shell script "%s" with administrator privileges`, strings.Join(command, " "))
-	return exec.Command("osascript", "-e", script)
+//go:embed askpass.js
+var askpassScript []byte
+
+func RunAsRoot(command []string) (*exec.Cmd, func() error, error) {
+	cleanup := func() error { return nil }
+	scriptFile, err := os.CreateTemp("", "askpass")
+	if err != nil {
+		return nil, cleanup, err
+	}
+	cleanup = func() error {
+		return os.Remove(scriptFile.Name())
+	}
+
+	_, err = scriptFile.Write(askpassScript)
+	if err != nil {
+		return nil, cleanup, err
+	}
+
+	if err := scriptFile.Chmod(0700); err != nil {
+		return nil, cleanup, err
+	}
+
+	cmd := exec.Command("sudo", "-A")
+	cmd.Args = append(cmd.Args, command...)
+	cmd.Env = append(os.Environ(), "SUDO_ASKPASS="+scriptFile.Name())
+
+	return cmd, cleanup, nil
 }

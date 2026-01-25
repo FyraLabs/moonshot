@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func RunAsRoot(program []string) *exec.Cmd {
+func RunAsRoot(program []string) (*exec.Cmd, func() error, error) {
 	cmd := exec.Command("pkexec", program...)
-	return cmd
+	return cmd, func() error { return nil }, nil
 }

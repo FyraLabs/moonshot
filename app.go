@@ -42,8 +42,7 @@ func (a *App) SelectFile(filepath *string) (*SourceFile, error) {
 			Filters: []runtime.FileFilter{
 				{
 					DisplayName: "Disk Images (*.img, *.img.*, *.iso, *.raw)",
-					// TODO: Same thing for DND
-					Pattern: "*.img;*.iso;*.raw;*.img.*",
+					Pattern:     "*.img;*.iso;*.raw",
 				},
 			},
 		})
@@ -117,13 +116,24 @@ func (a *App) ListDrives() ([]Drive, error) {
 	return drives, nil
 }
 
-func (a *App) FlashDrive(filePath string, driveName string) error {
+func (a *App) FlashDrive(filePath string, driveName string, eject bool) error {
 	exe, err := os.Executable()
 	if err != nil {
 		return err
 	}
 
-	cmd := util.RunAsRoot([]string{exe, "flash", filePath, util.GetDrivePath(driveName)})
+	command := []string{exe, "flash"}
+	if eject {
+		command = append(command, "--eject")
+	}
+
+	command = append(command, filePath, util.GetDrivePath(driveName))
+
+	cmd, cleanup, err := util.RunAsRoot(command)
+	defer cleanup()
+	if err != nil {
+		return err
+	}
 	cmd.Stderr = os.Stderr
 
 	stdout, err := cmd.StdoutPipe()

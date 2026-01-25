@@ -1,10 +1,12 @@
 package lib
 
 import (
+	"errors"
 	"hash"
 	"hash/crc64"
 	"io"
 	"os"
+	"syscall"
 
 	"github.com/ncw/directio"
 )
@@ -67,8 +69,9 @@ func Flash(filePath string, drivePath string, progressCh chan int) (hash.Hash64,
 		}
 	}
 
+	// On macOS, sync on a rdisk can return ENOTTY, which should be ignored
 	err = drive.Sync()
-	if err != nil {
+	if !errors.Is(err, syscall.ENOTTY) && err != nil {
 		return nil, err
 	}
 

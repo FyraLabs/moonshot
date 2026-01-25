@@ -15,7 +15,7 @@ var assets embed.FS
 func main() {
 	if len(os.Args) > 2 && os.Args[1] == "flash" {
 		if err := flash(); err != nil {
-			println("Error flashing firmware:", err.Error())
+			println("Error flashing image:", err.Error())
 			os.Exit(1)
 		}
 		os.Exit(0)
