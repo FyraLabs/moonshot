@@ -17,7 +17,7 @@ jobs:
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - name: Build Application
-        run: wails build --platform ${{ matrix.os == 'windows-latest' && 'windows/amd64,windows/arm64' || matrix.os == 'macos-latest' && 'darwin/universal' || 'linux/amd64,linux/arm64' }}
+        run: wails build --tags webkit2_41 --platform ${{ matrix.os == 'windows-latest' && 'windows/amd64,windows/arm64' || matrix.os == 'macos-latest' && 'darwin/universal' || 'linux/amd64,linux/arm64' }}
       - uses: actions/upload-artifact@v6
         with:
           name: moonshot-${{ matrix.os }}
