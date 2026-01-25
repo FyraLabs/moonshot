@@ -3,7 +3,13 @@
 package util
 
 import (
+	"bytes"
+	"fmt"
 	"os"
+	"os/exec"
+	"strconv"
+	"strings"
+	"syscall"
 
 	"github.com/ncw/directio"
 	"golang.org/x/sys/windows"
@@ -45,13 +51,31 @@ func Eject(drivePath string) error {
 }
 
 func OpenDriveForFlash(driveFile string) (*os.File, error) {
-	drive, err := directio.OpenFile(driveFile, os.O_WRONLY, 0666)
+	// I'm not 100% sure if this is correct, but cleaning the disk using diskpart, then locking and dismounting the drive seems to allow the write calls to succeed.
+	// Thanks Gemini for saving me from shoveling through Microsoft's shitty documentation.
+
+	driveNumber, err := strconv.Atoi(strings.TrimPrefix(strings.ToUpper(driveFile), `\\.\PHYSICALDRIVE`))
 	if err != nil {
 		return nil, err
 	}
 
-	// I'm not 100% sure if this is correct, but locking and dismounting the drive seems to allow the write calls to succeed.
-	// Thanks Gemini for saving me from shoveling through Microsoft's shitty documentation.
+	cmd := exec.Command("diskpart")
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		HideWindow:    true,
+		CreationFlags: 0x08000000,
+	}
+
+	cmd.Stdin = bytes.NewBufferString(fmt.Sprintf("select disk %d\nclean\nrescan", driveNumber))
+
+	if err := cmd.Run(); err != nil {
+		return nil, err
+	}
+
+	drive, err := directio.OpenFile(driveFile, os.O_RDWR, 0666)
+	if err != nil {
+		return nil, err
+	}
+
 	handle := windows.Handle(drive.Fd())
 
 	var bytesReturned uint32
@@ -64,6 +88,7 @@ func OpenDriveForFlash(driveFile string) (*os.File, error) {
 		nil,
 	)
 	if err != nil {
+		drive.Close()
 		return nil, err
 	}
 
@@ -76,6 +101,7 @@ func OpenDriveForFlash(driveFile string) (*os.File, error) {
 		nil,
 	)
 	if err != nil {
+		drive.Close()
 		return nil, err
 	}
 
