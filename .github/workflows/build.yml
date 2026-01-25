@@ -6,8 +6,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+        variants:
+          - runner: ubuntu-latest
+            platform: linux/amd64
+          - runner: ubuntu-24.04-arm
+            platform: linux/arm64
+          - runner: macos-latest
+            platform: darwin/universal
+          - runner: windows-latest
+            platform: windows/amd64,windows/arm64
+    runs-on: ${{ matrix.variants.runner }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
@@ -20,7 +28,7 @@ jobs:
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - name: Build Application
-        run: wails build --tags webkit2_41 --platform ${{ matrix.os == 'windows-latest' && 'windows/amd64,windows/arm64' || matrix.os == 'macos-latest' && 'darwin/universal' || 'linux/amd64,linux/arm64' }}
+        run: wails build --tags webkit2_41 --platform ${{ matrix.variants.platform }}
       - uses: actions/upload-artifact@v6
         with:
           name: moonshot-${{ matrix.os }}
