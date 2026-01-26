@@ -1,4 +1,4 @@
-# Moonshot
+# 🌙 ☄️ Moonshot
 
 A beautiful cross-platform flashing tool.
 
