@@ -15,3 +15,7 @@ Install [Wails](https://wails.io), then run `wails dev` to start a development s
 ## Building
 
 To build a redistributable, production mode package, use `wails build`.
+
+## "Moonshot"?
+
+See the Suisei song with the same title.
