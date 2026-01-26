@@ -26,7 +26,7 @@
 
 	async function selectImage() {
 		if (appState.file) return;
-		appState.file = await SelectFile();
+		appState.file = await SelectFile(undefined);
 	}
 </script>
 

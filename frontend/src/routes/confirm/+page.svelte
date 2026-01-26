@@ -7,6 +7,9 @@
 	import { FlashDrive } from '$lib/wailsjs/go/main/App';
 	import { resolve } from '$app/paths';
 	import { toast } from 'svelte-sonner';
+
+	const file = $derived(appState.file!);
+	const drive = $derived(appState.drive!);
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -20,7 +23,7 @@
 	<div class="flex flex-1 flex-col items-center justify-center gap-6">
 		<div class="flex flex-col items-center gap-2">
 			<File />
-			<p>{appState.file.basename} ({prettyBytes(appState.file.size)})</p>
+			<p>{file.basename} ({prettyBytes(file.size)})</p>
 		</div>
 
 		<ArrowDown />
@@ -28,7 +31,7 @@
 		<div class="flex flex-col items-center gap-2">
 			<HardDrive />
 			<p>
-				{appState.drive.model} ({appState.drive?.name}, {prettyBytes(appState.drive?.capacity)})
+				{drive.model} ({drive.name}, {prettyBytes(drive.capacity)})
 			</p>
 		</div>
 	</div>
@@ -40,10 +43,9 @@
 			class="min-w-28"
 			disabled={false}
 			onclick={() => {
-				FlashDrive(appState.file.path, appState.drive?.name, appState.drive?.removable)
+				FlashDrive(file.path, drive.name, drive.removable)
 					.catch((e) =>
-						toast(`Error flashing drive: ${e.message ?? e}`, {
-							type: 'error',
+						toast.error(`Error flashing drive: ${e.message ?? e}`, {
 							richColors: true,
 							duration: Infinity,
 							closeButton: true

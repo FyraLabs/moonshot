@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Progress } from '$lib/components/ui/progress';
 	import prettyBytes from 'pretty-bytes';
 	import { appState, resetAppState } from '../state.svelte';
