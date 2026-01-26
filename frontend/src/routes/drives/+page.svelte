@@ -24,7 +24,7 @@
 	}
 </script>
 
-<div class="flex h-screen flex-col gap-6 p-6">
+<div class="flex h-screen max-h-screen flex-col gap-6 p-6">
 	<div>
 		<h1 class="text-2xl font-bold">Select your drive</h1>
 		<h2 class="text-md text-muted-foreground">
@@ -32,7 +32,7 @@
 		</h2>
 	</div>
 
-	<div class="flex-1">
+	<div class="h-0 flex-1 overflow-y-auto">
 		<Table.Root>
 			<Table.Header>
 				<Table.Row>
