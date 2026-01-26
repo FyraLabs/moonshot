@@ -7,7 +7,7 @@ require (
 	github.com/jaypipes/ghw v0.21.2
 	github.com/ncw/directio v1.0.5
 	github.com/wailsapp/wails/v2 v2.11.0
-	golang.org/x/sys v0.30.0
+	golang.org/x/sys v0.40.0
 )
 
 require (
@@ -44,3 +44,5 @@ require (
 )
 
 // replace github.com/wailsapp/wails/v2 v2.11.0 => /Users/lleyton/go/pkg/mod
+
+replace github.com/jaypipes/ghw v0.21.2 => github.com/fyralabs/ghw v0.0.0-20260126021134-13b4865eea7b
