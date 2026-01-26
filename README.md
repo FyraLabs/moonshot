@@ -10,7 +10,7 @@ A beautiful cross-platform flashing tool.
 
 ## Development
 
-Install [Wails](https://wails.io), then run `wails dev` to start a development server with hot-reloading.
+Install [Wails](https://wails.io) and [Bun](https://bun.sh), then run `wails dev` to start a development server with hot-reloading.
 
 ## Building
 
