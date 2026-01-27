@@ -14,7 +14,7 @@
 
 <div class="flex h-screen flex-col gap-6 p-6">
 	<div>
-		<h1 class="text-2xl font-bold">Flashing Your Drive</h1>
+		<h1 class="text-2xl font-bold">Flashing Your Drive...</h1>
 		<h2 class="text-md text-muted-foreground">
 			This may take a few minutes. Please do not disconnect your drive.
 		</h2>
