@@ -73,12 +73,14 @@
 		</div>
 	</button>
 
-	<div class="ml-auto flex gap-3">
+	<div class="flex gap-3">
 		<Button class="min-w-28" variant="outline" onclick={() => goto(resolve('/settings'))}
 			>Settings</Button
 		>
-		<Button class="min-w-28" disabled={!appState.file} onclick={() => goto(resolve('/drives'))}
-			>Next</Button
+		<Button
+			class="ml-auto min-w-28"
+			disabled={!appState.file}
+			onclick={() => goto(resolve('/drives'))}>Next</Button
 		>
 	</div>
 </div>
