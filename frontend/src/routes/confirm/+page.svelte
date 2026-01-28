@@ -14,7 +14,7 @@
 
 <div class="flex h-screen flex-col gap-6 p-6">
 	<div>
-		<h1 class="text-2xl font-bold">Confirm selection</h1>
+		<h1 class="text-2xl font-bold">Confirm Selection</h1>
 		<h2 class="text-md text-muted-foreground">
 			Are you sure you want to flash this drive? All data will be erased.
 		</h2>

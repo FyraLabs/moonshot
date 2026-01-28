@@ -26,7 +26,7 @@
 
 <div class="flex h-screen max-h-screen flex-col gap-6 p-6">
 	<div>
-		<h1 class="text-2xl font-bold">Select your drive</h1>
+		<h1 class="text-2xl font-bold">Select Your Drive</h1>
 		<h2 class="text-md text-muted-foreground">
 			This is the drive where the operating system will be flashed. All data will be erased.
 		</h2>

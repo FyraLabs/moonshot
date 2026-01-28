@@ -14,7 +14,7 @@
 
 <div class="flex h-screen flex-col gap-6 p-6">
 	<div>
-		<h1 class="text-2xl font-bold">Flashing your drive</h1>
+		<h1 class="text-2xl font-bold">Flashing Your Drive...</h1>
 		<h2 class="text-md text-muted-foreground">
 			This may take a few minutes. Please do not disconnect your drive.
 		</h2>
@@ -23,7 +23,7 @@
 	<div class="flex flex-1 flex-wrap gap-4">
 		<Card.Root class="flex-1">
 			<Card.Header>
-				<Card.Title>Sponsored thing</Card.Title>
+				<Card.Title>Sponsored Thing</Card.Title>
 				<Card.Description
 					>Our sponsor is very sigma. Get $67 off of your Labubu when you use code ohio.</Card.Description
 				>
