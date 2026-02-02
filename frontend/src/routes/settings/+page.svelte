@@ -21,7 +21,7 @@
 				<Field.Content>
 					<Field.Label for="show-all-drives">Show all drives</Field.Label>
 					<Field.Description
-						>This will show all drives including internal drives, which may be generally dangerous
+						>This will show all drives including internal drives, which may be dangerous
 						to flash.</Field.Description
 					>
 				</Field.Content>
@@ -31,8 +31,8 @@
 				<Field.Content>
 					<Field.Label for="enable-analytics">Enable privacy preserving analytics</Field.Label>
 					<Field.Description
-						>We use a self-hosted, completely anonymous analytics system to understand how we can
-						improve Moonshot.</Field.Description
+						>We use a self-hosted, completely anonymous analytics system to assist us in
+						improving Moonshot.</Field.Description
 					>
 				</Field.Content>
 			</Field.Field>
