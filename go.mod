@@ -12,7 +12,6 @@ require (
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
-	github.com/fyralabs/ghw v0.0.0-20260203000724-71e70c425513 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -46,4 +45,4 @@ require (
 
 // replace github.com/wailsapp/wails/v2 v2.11.0 => /Users/lleyton/go/pkg/mod
 
-replace github.com/jaypipes/ghw v0.21.2 => github.com/fyralabs/ghw v0.0.0-20260126021134-13b4865eea7b
+replace github.com/jaypipes/ghw v0.21.2 => github.com/fyralabs/ghw v0.0.0-20260203000724-71e70c425513
