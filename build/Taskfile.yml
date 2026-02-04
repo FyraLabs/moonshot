@@ -2,6 +2,7 @@ version: "3"
 
 tasks:
   go:mod:tidy:
+    run: when_changed
     summary: Runs `go mod tidy`
     internal: true
     cmds:
