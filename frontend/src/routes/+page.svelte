@@ -11,22 +11,21 @@
 	import { resolve } from '$app/paths';
 
 	onMount(() => {
-		Events.On('FilesDropped', async ({ data: { paths } }) => {
-			console.log('owo');
+		Events.On('files-dropped', async ({ data: { files } }) => {
 			if (appState.file) return;
-			if (paths.length > 0) {
-				const imagePath = paths[0];
+			if (files.length > 0) {
+				const imagePath = files[0];
 				if (!/^.+(\.raw|\.iso|\.img)$/.test(imagePath)) return;
-				appState.file = await SelectFile(paths[0]);
+				appState.file = await SelectFile(files[0]);
 			}
 		});
 
-		return () => Events.Off('WindowFilesDropped');
+		return () => Events.Off('files-dropped');
 	});
 
 	async function selectImage() {
 		if (appState.file) return;
-		appState.file = await SelectFile(undefined);
+		appState.file = await SelectFile(null);
 	}
 </script>
 
@@ -51,7 +50,7 @@
 
 	<button
 		type="button"
-		class="flex w-full flex-1 flex-col items-center justify-center rounded border-2 border-dotted border-muted"
+		class="flex w-full flex-1 flex-col items-center justify-center rounded border-2 border-dotted border-muted [.file-drop-target-active]:border-primary"
 		onclick={selectImage}
 		data-file-drop-target
 	>

@@ -10,13 +10,13 @@ jobs:
       matrix:
         variants:
           - runner: ubuntu-latest
-            platform: linux/amd64
+            task: linux:package
           - runner: ubuntu-24.04-arm
-            platform: linux/arm64
+            task: linux:package
           - runner: macos-latest
-            platform: darwin/universal
+            task: darwin:package:universal
           - runner: windows-latest
-            platform: windows/amd64,windows/arm64
+            task: build:native
     runs-on: ${{ matrix.variants.runner }}
     steps:
       - uses: actions/checkout@v6
@@ -29,9 +29,9 @@ jobs:
         if: matrix.variants.runner == 'ubuntu-latest' || matrix.variants.runner == 'ubuntu-24.04-arm'
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev
       - name: Install Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+        run: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
       - name: Build Application
-        run: wails build --tags webkit2_41 --platform ${{ matrix.variants.platform }}
+        run: wails3 build --platform ${{ matrix.variants.task }}
       - uses: actions/upload-artifact@v6
         with:
           name: moonshot-${{ matrix.variants.runner }}
