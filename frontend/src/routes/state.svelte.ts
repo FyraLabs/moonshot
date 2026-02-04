@@ -1,5 +1,5 @@
-import type { ListDrives, SelectFile } from '$lib/wailsjs/go/main/App';
-import { EventsOn } from '$lib/wailsjs/runtime/runtime';
+import type { ListDrives, SelectFile } from '../../bindings/moonshot/AppService';
+import { Events } from '@wailsio/runtime';
 
 export const appState: {
 	file: Awaited<ReturnType<typeof SelectFile>> | null;
@@ -28,8 +28,8 @@ export function resetAppState() {
 
 let bytesWritten = 0;
 
-EventsOn('progress', (data) => {
-	const parsedData = JSON.parse(data);
+Events.On('progress', (e) => {
+	const parsedData = JSON.parse(e.data);
 	if (parsedData.stage != appState.stage) {
 		appState.stage = parsedData.stage;
 		appState.bytesWritten = 0;

@@ -4,7 +4,7 @@
 	import { appState, resetAppState } from '../state.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button';
-	import { BrowserOpenURL } from '$lib/wailsjs/runtime/runtime';
+	import { Browser } from '@wailsio/runtime';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { Throttled } from 'runed';
@@ -35,17 +35,17 @@
 				<Card.Description>Moonshot is a project of Fyra Labs.</Card.Description>
 			</Card.Header>
 			<Card.Footer class="mt-auto flex gap-2">
-				<Button onclick={() => BrowserOpenURL('https://github.com/sponsors/FyraLabs')}
+				<Button onclick={() => Browser.OpenURL('https://github.com/sponsors/FyraLabs')}
 					>Sponsor</Button
 				>
-				<Button variant="secondary" onclick={() => BrowserOpenURL('https://fyralabs.com')}
+				<Button variant="secondary" onclick={() => Browser.OpenURL('https://fyralabs.com')}
 					>About us</Button
 				>
 				<Button
 					variant="outline"
 					size="icon"
 					class="text-[#5865F2]"
-					onclick={() => BrowserOpenURL('https://fyralabs.com/discord')}
+					onclick={() => Browser.OpenURL('https://fyralabs.com/discord')}
 				>
 					<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
 						><path

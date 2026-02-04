@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=Moonshot
+Comment=A beautiful cross-platform flashing tool.
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/moonshot %u
+Terminal=false
+Type=Application
+Icon=moonshot
+Categories=Utility;
+StartupWMClass=moonshot
+
+ 

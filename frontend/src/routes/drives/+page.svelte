@@ -3,8 +3,8 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import * as Table from '$lib/components/ui/table/index.js';
-	import { ListDrives } from '$lib/wailsjs/go/main/App';
-	import { main } from '$lib/wailsjs/go/models';
+	import { ListDrives } from '../../../bindings/moonshot/AppService';
+	import { Drive } from '../../../bindings/moonshot/models';
 	import prettyBytes from 'pretty-bytes';
 	import { onMount } from 'svelte';
 	import { appState } from '../state.svelte';
@@ -19,7 +19,7 @@
 		drives = await ListDrives();
 	});
 
-	function validDrive(drive: main.Drive): boolean {
+	function validDrive(drive: Drive): boolean {
 		return Math.ceil(appState.file!.size / 512) * 512 <= drive.capacity;
 	}
 </script>

@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { SelectFile } from '$lib/wailsjs/go/main/App';
-	import { OnFileDrop, OnFileDropOff } from '$lib/wailsjs/runtime';
-
+	import { SelectFile } from '../../bindings/moonshot/AppService';
+	import { Events, Window } from '@wailsio/runtime';
 	import { onMount } from 'svelte';
 	import prettyBytes from 'pretty-bytes';
 	import { Upload, File, CircleAlert } from '@lucide/svelte';
@@ -12,16 +11,17 @@
 	import { resolve } from '$app/paths';
 
 	onMount(() => {
-		OnFileDrop(async (_x, _y, paths) => {
+		Events.On('FilesDropped', async ({ data: { paths } }) => {
+			console.log('owo');
 			if (appState.file) return;
 			if (paths.length > 0) {
 				const imagePath = paths[0];
 				if (!/^.+(\.raw|\.iso|\.img)$/.test(imagePath)) return;
 				appState.file = await SelectFile(paths[0]);
 			}
-		}, false);
+		});
 
-		return () => OnFileDropOff();
+		return () => Events.Off('WindowFilesDropped');
 	});
 
 	async function selectImage() {
@@ -53,7 +53,7 @@
 		type="button"
 		class="flex w-full flex-1 flex-col items-center justify-center rounded border-2 border-dotted border-muted"
 		onclick={selectImage}
-		style="--wails-drop-target: drop;"
+		data-file-drop-target
 	>
 		<div class="flex flex-col items-center gap-2">
 			{#if appState.file}

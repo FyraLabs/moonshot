@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -13,23 +12,17 @@ import (
 
 	"github.com/diskfs/go-diskfs/partition/gpt"
 	"github.com/jaypipes/ghw"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-// App struct
-type App struct {
-	ctx context.Context
+type AppService struct {
+	app *application.App
 }
 
-// NewApp creates a new App application struct
-func NewApp() *App {
-	return &App{}
-}
-
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
-func (a *App) startup(ctx context.Context) {
-	a.ctx = ctx
+func NewAppService(app *application.App) *AppService {
+	return &AppService{
+		app: app,
+	}
 }
 
 type SourceFile struct {
@@ -39,16 +32,12 @@ type SourceFile struct {
 	ValidGPT bool   `json:"validGPT"`
 }
 
-func (a *App) SelectFile(filepath *string) (*SourceFile, error) {
+func (s *AppService) SelectFile(filepath *string) (*SourceFile, error) {
 	if filepath == nil {
-		fp, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
-			Filters: []runtime.FileFilter{
-				{
-					DisplayName: "Disk Images (*.img, *.img.*, *.iso, *.raw)",
-					Pattern:     "*.img;*.iso;*.raw",
-				},
-			},
-		})
+		fp, err := s.app.Dialog.OpenFile().
+			SetTitle("Select Disk Image").
+			AddFilter("Disk Images", "*.img;*.iso;*.raw").
+			PromptForSingleSelection()
 		if err != nil {
 			return nil, err
 		}
@@ -98,7 +87,7 @@ type Drive struct {
 	Removable bool   `json:"removable"`
 }
 
-func (a *App) ListDrives() ([]Drive, error) {
+func (s *AppService) ListDrives() ([]Drive, error) {
 	block, err := ghw.Block()
 	if err != nil {
 		fmt.Printf("Error getting block storage info: %v", err)
@@ -119,7 +108,7 @@ func (a *App) ListDrives() ([]Drive, error) {
 	return drives, nil
 }
 
-func (a *App) FlashDrive(filePath string, driveName string, eject bool) error {
+func (s *AppService) FlashDrive(filePath string, driveName string, eject bool) error {
 	exe, err := os.Executable()
 	if err != nil {
 		return err
@@ -154,7 +143,7 @@ func (a *App) FlashDrive(filePath string, driveName string, eject bool) error {
 	scanner := bufio.NewScanner(stdout)
 
 	for scanner.Scan() {
-		runtime.EventsEmit(a.ctx, "progress", scanner.Text())
+		s.app.Event.Emit("progress", scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {

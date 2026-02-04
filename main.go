@@ -2,11 +2,10 @@ package main
 
 import (
 	"embed"
+	"log"
 	"os"
 
-	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/options"
-	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 //go:embed all:frontend/build
@@ -21,33 +20,30 @@ func main() {
 		os.Exit(0)
 	}
 
-	// Create an instance of the app structure
-	app := NewApp()
-
-	// Create application with options
-	err := wails.Run(&options.App{
-		Title:     "Moonshot",
-		MinWidth:  712,
-		Width:     712,
-		MinHeight: 500,
-		Height:    500,
-		AssetServer: &assetserver.Options{
-			Assets: assets,
+	app := application.New(application.Options{
+		Name:        "moonshot",
+		Description: "A simple and intuitive tool for flashing OS images to drives",
+		Assets: application.AssetOptions{
+			Handler: application.AssetFileServerFS(assets),
 		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup:        app.startup,
-		Bind: []interface{}{
-			app,
+		Mac: application.MacOptions{
+			ApplicationShouldTerminateAfterLastWindowClosed: true,
 		},
-		DragAndDrop: &options.DragAndDrop{
-			EnableFileDrop: true,
-		},
-		// Mac: &mac.Options{
-		// 	TitleBar: mac.TitleBarHidden(),
-		// },
 	})
 
+	app.RegisterService(application.NewService(NewAppService(app)))
+
+	app.Window.NewWithOptions(application.WebviewWindowOptions{
+		Title:          "Moonshot",
+		Width:          712,
+		MinWidth:       712,
+		Height:         500,
+		MinHeight:      500,
+		EnableFileDrop: true,
+	})
+
+	err := app.Run()
 	if err != nil {
-		println("Error:", err.Error())
+		log.Fatal(err)
 	}
 }
