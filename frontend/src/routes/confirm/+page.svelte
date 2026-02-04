@@ -4,7 +4,7 @@
 	import { HardDrive, File, ArrowDown } from '@lucide/svelte';
 	import { appState } from '../state.svelte';
 	import prettyBytes from 'pretty-bytes';
-	import { FlashDrive } from '../../../bindings/moonshot/AppService';
+	import { FlashDrive } from '../../../bindings/moonshot/appservice';
 	import { resolve } from '$app/paths';
 	import { toast } from 'svelte-sonner';
 

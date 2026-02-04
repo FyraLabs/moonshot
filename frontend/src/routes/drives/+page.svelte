@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import * as Table from '$lib/components/ui/table/index.js';
-	import { ListDrives } from '../../../bindings/moonshot/AppService';
+	import { ListDrives } from '../../../bindings/moonshot/appservice';
 	import { Drive } from '../../../bindings/moonshot/models';
 	import prettyBytes from 'pretty-bytes';
 	import { onMount } from 'svelte';

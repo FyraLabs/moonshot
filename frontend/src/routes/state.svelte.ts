@@ -1,4 +1,4 @@
-import type { ListDrives, SelectFile } from '../../bindings/moonshot/AppService';
+import type { ListDrives, SelectFile } from '../../bindings/moonshot/appservice';
 import { Events } from '@wailsio/runtime';
 
 export const appState: {

@@ -16,7 +16,7 @@ jobs:
           - runner: macos-latest
             task: darwin:package:universal
           - runner: windows-latest
-            task: build:native
+            task: windows:build:native
     runs-on: ${{ matrix.variants.runner }}
     steps:
       - uses: actions/checkout@v6

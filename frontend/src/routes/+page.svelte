@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { SelectFile } from '../../bindings/moonshot/AppService';
-	import { Events, Window } from '@wailsio/runtime';
+	import { SelectFile } from '../../bindings/moonshot/appservice';
+	import { Events } from '@wailsio/runtime';
 	import { onMount } from 'svelte';
 	import prettyBytes from 'pretty-bytes';
 	import { Upload, File, CircleAlert } from '@lucide/svelte';
