@@ -34,7 +34,10 @@ jobs:
         run: wails3 task ${{ matrix.variants.task }}
       - name: Build Application Windows ARM
         if: matrix.variants.runner == 'windows-latest'
-        run: wails3 task ${{ matrix.variants.task }} GOARCH=arm64
+        run: |
+          mv bin\moonshot.exe bin\moonshot-x64.exe
+          wails3 task ${{ matrix.variants.task }} GOARCH=arm64
+          mv bin\moonshot.exe bin\moonshot-arm64.exe
       - uses: actions/upload-artifact@v6
         with:
           name: moonshot-${{ matrix.variants.runner }}
