@@ -10,7 +10,7 @@ A beautiful cross-platform flashing tool.
 
 ## Development
 
-You'll first need to install the following dependencies: `go`, `pkg-config`, and `webkit2gtk`. Install [Wails](https://wails.io) and [Bun](https://bun.sh), then run `wails dev` to start a development server with hot-reloading. On Linux, you may need to pass `--tags webkit2_41` to the Wails CLI to build against the newer version of WebKitGTK found in many distributions.
+You'll first need to install the following dependencies: `go`, `pkg-config`, and `webkit2gtk`. Install [Wails v3 Alpha]([https://wails.io](https://v3alpha.wails.io/)) and [Bun](https://bun.sh), then run `wails dev` to start a development server with hot-reloading.
 
 ## Building
 
