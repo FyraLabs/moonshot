@@ -30,10 +30,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
-      - name: Build Frontend
-        run: wails3 task common:build:frontend
       - name: Build Application
-        run: wails3 task ${{ matrix.variants.task }}
+        run: wails3 task common:build:frontend ${{ matrix.variants.task }}
       - name: Build Application Windows ARM
         if: matrix.variants.runner == 'windows-latest'
         run: |
