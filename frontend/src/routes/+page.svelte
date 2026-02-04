@@ -31,7 +31,7 @@
 
 <div class="flex h-screen flex-col gap-6 p-6">
 	<div>
-		<h1 class="text-2xl font-bold">Select your image</h1>
+		<h1 class="text-2xl font-bold">Select Your Image</h1>
 		<h2 class="text-md text-muted-foreground">
 			This is the operating system to flash to your drive.
 		</h2>
