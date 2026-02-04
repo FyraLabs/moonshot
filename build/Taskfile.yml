@@ -22,6 +22,7 @@ tasks:
       - bun install
 
   build:frontend:
+    run: when_changed
     label: build:frontend (DEV={{.DEV}})
     summary: Build the frontend project
     dir: frontend
