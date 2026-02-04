@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"moonshot/util"
 	"os"
@@ -129,7 +130,7 @@ func (s *AppService) FlashDrive(filePath string, driveName string, eject bool) e
 
 	var stderrBuf bytes.Buffer
 
-	cmd.Stderr = &stderrBuf
+	cmd.Stderr = io.MultiWriter(&stderrBuf, os.Stderr)
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

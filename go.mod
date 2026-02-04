@@ -58,4 +58,4 @@ require (
 
 // replace github.com/wailsapp/wails/v2 v2.11.0 => /Users/lleyton/go/pkg/mod
 
-replace github.com/jaypipes/ghw v0.21.2 => github.com/fyralabs/ghw v0.0.0-20260126021134-13b4865eea7b
+replace github.com/jaypipes/ghw v0.21.2 => github.com/fyralabs/ghw v0.0.0-20260204000426-8e594c638562
