@@ -31,7 +31,7 @@ jobs:
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
       - name: Build Application
-        run: wails3 task -C 1 ${{ matrix.variants.task }}
+        run: wails3 task ${{ matrix.variants.task }}
       - name: Build Application Windows ARM
         if: matrix.variants.runner == 'windows-latest'
         run: |
