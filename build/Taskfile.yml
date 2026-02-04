@@ -12,9 +12,9 @@ tasks:
     dir: frontend
     sources:
       - package.json
-      - package-lock.json
+      - bun.lock
     generates:
-      - node_modules
+      - node_modules/**/*
     preconditions:
       - sh: bun --version
         msg: "Looks like bun isn't installed."
