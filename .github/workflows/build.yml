@@ -32,6 +32,9 @@ jobs:
         run: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
       - name: Build Application
         run: wails3 task ${{ matrix.variants.task }}
+      - name: Build Application Windows ARM
+        if: matrix.variants.runner == 'windows-latest'
+        run: wails3 task ${{ matrix.variants.task }} GOARCH=arm64
       - uses: actions/upload-artifact@v6
         with:
           name: moonshot-${{ matrix.variants.runner }}
