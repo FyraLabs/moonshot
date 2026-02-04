@@ -4,8 +4,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/diskfs/go-diskfs v1.7.0 h1:vonWmt5CMowXwUc79jWyGrf2DIMeoOjkLlMnQYGVOs8=
 github.com/diskfs/go-diskfs v1.7.0/go.mod h1:LhQyXqOugWFRahYUSw47NyZJPezFzB9UELwhpszLP/k=
-github.com/fyralabs/ghw v0.0.0-20260203000724-71e70c425513 h1:Jm+thXIfsvf87lvx4LsEikt1bZWnOiBhyMMNMMOHTF8=
-github.com/fyralabs/ghw v0.0.0-20260203000724-71e70c425513/go.mod h1:CjdsBMtOTIhP22PiI3CPpknmPMlrREwfbC+hV6paht4=
+github.com/fyralabs/ghw v0.0.0-20260204000426-8e594c638562 h1:CsUddskQhPRZAO5zVRWlLhmc56O0bsoE3yDqrxOKEfE=
+github.com/fyralabs/ghw v0.0.0-20260204000426-8e594c638562/go.mod h1:CjdsBMtOTIhP22PiI3CPpknmPMlrREwfbC+hV6paht4=
 github.com/go-ole/go-ole v1.2.6/go.mod h1:pprOEPIfldk/42T2oK7lQ4v4JSDwmV0As9GaiUsvbm0=
 github.com/go-ole/go-ole v1.3.0 h1:Dt6ye7+vXGIKZ7Xtk4s6/xVdGDQynvom7xCFEdWr6uE=
 github.com/go-ole/go-ole v1.3.0/go.mod h1:5LS6F96DhAwUc7C+1HLexzMXY1xGRSryjyPPKW6zv78=
