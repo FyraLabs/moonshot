@@ -6,7 +6,7 @@ require (
 	github.com/diskfs/go-diskfs v1.7.0
 	github.com/jaypipes/ghw v0.21.2
 	github.com/ncw/directio v1.0.5
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.64
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.67
 	golang.org/x/sys v0.40.0
 )
 
@@ -35,7 +35,7 @@ require (
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leaanthony/go-ansi-parser v1.6.1 // indirect
 	github.com/leaanthony/u v1.1.1 // indirect
-	github.com/lmittmann/tint v1.1.2 // indirect
+	github.com/lmittmann/tint v1.1.3 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/pjbgf/sha1cd v0.5.0 // indirect
