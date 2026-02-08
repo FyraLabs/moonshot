@@ -6,7 +6,7 @@ require (
 	github.com/diskfs/go-diskfs v1.7.0
 	github.com/jaypipes/ghw v0.21.2
 	github.com/ncw/directio v1.0.5
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.67
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.69
 	golang.org/x/sys v0.40.0
 )
 
