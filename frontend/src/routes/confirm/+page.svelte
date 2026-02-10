@@ -5,6 +5,7 @@
 	import { appState } from '../state.svelte';
 	import prettyBytes from 'pretty-bytes';
 	import { FlashDrive } from '../../../bindings/moonshot/appservice';
+	import { NotificationService } from '../../../bindings/github.com/wailsapp/wails/v3/pkg/services/notifications';
 	import { resolve } from '$app/paths';
 	import { toast } from 'svelte-sonner';
 
@@ -44,13 +45,44 @@
 			disabled={false}
 			onclick={() => {
 				FlashDrive(file.path, drive.name, drive.removable)
-					.catch((e) =>
+					.then(async () => {
+						const authorized = await NotificationService.CheckNotificationAuthorization();
+						if (authorized) {
+							NotificationService.SendNotification({
+								id: crypto.randomUUID(),
+								title: 'Flash Complete',
+								subtitle: '',
+								body: 'You can now safely eject your drive.',
+								categoryId: 'flash-result',
+								data: {
+									ok: true,
+									timestamp: Date.now()
+								}
+							});
+						}
+					})
+					.catch(async (e) => {
 						toast.error(`Error flashing drive: ${e.message ?? e}`, {
 							richColors: true,
 							duration: Infinity,
 							closeButton: true
-						})
-					)
+						});
+
+						const authorized = await NotificationService.CheckNotificationAuthorization();
+						if (authorized) {
+							NotificationService.SendNotification({
+								id: crypto.randomUUID(),
+								title: 'Flash Failed',
+								subtitle: '',
+								body: 'Error: ' + (e.message ?? e),
+								categoryId: 'flash-result',
+								data: {
+									ok: false,
+									timestamp: Date.now()
+								}
+							});
+						}
+					})
 					.finally(() => {
 						appState.finished = true;
 					});
