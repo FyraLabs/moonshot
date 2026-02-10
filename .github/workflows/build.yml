@@ -31,12 +31,12 @@ jobs:
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
       - name: Build Application
-        run: wails3 task ${{ matrix.variants.task }}
+        run: EXTRA_TAGS=gtk4 wails3 task ${{ matrix.variants.task }}
       - name: Build Application Windows ARM
         if: matrix.variants.runner == 'windows-latest'
         run: |
           mv bin\moonshot.exe bin\moonshot-x64.exe
-          wails3 task ${{ matrix.variants.task }} GOARCH=arm64
+          GOARCH=arm64 wails3 task ${{ matrix.variants.task }}
           mv bin\moonshot.exe bin\moonshot-arm64.exe
       - uses: actions/upload-artifact@v6
         with:
