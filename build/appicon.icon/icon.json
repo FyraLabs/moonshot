@@ -1,32 +1,31 @@
 {
   "fill" : {
-    "automatic-gradient" : "extended-gray:1.00000,1.00000"
+    "linear-gradient" : [
+      "display-p3:0.22745,0.42745,0.64706,1.00000",
+      "display-p3:0.16715,0.24371,0.43816,1.00000"
+    ],
+    "orientation" : {
+      "start" : {
+        "x" : 0.5,
+        "y" : 1
+      },
+      "stop" : {
+        "x" : 0.5,
+        "y" : 0.3
+      }
+    }
   },
   "groups" : [
     {
       "layers" : [
         {
-          "fill-specializations" : [
-            {
-              "appearance" : "dark",
-              "value" : {
-                "solid" : "srgb:0.92143,0.92145,0.92144,1.00000"
-              }
-            },
-            {
-              "appearance" : "tinted",
-              "value" : {
-                "solid" : "srgb:0.83742,0.83744,0.83743,1.00000"
-              }
-            }
-          ],
-          "image-name" : "wails_icon_vector.svg",
-          "name" : "wails_icon_vector",
+          "image-name" : "sfsdf.png",
+          "name" : "sfsdf",
           "position" : {
             "scale" : 1.25,
             "translation-in-points" : [
-              36.890625,
-              4.96875
+              0,
+              0
             ]
           }
         }
