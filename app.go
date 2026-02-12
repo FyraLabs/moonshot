@@ -89,7 +89,7 @@ type Drive struct {
 }
 
 func (s *AppService) ListDrives() ([]Drive, error) {
-	block, err := ghw.Block()
+	block, err := ghw.Block(ghw.WithDisablePartitions())
 	if err != nil {
 		fmt.Printf("Error getting block storage info: %v", err)
 	}

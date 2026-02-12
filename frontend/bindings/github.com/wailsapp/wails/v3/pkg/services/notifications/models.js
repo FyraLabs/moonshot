@@ -163,7 +163,7 @@ export class NotificationOptions {
         if (/** @type {any} */(false)) {
             /**
              * @member
-             * @type {{ [_ in string]?: any } | undefined}
+             * @type {{ [_: string]: any } | undefined}
              */
             this["data"] = undefined;
         }
