@@ -4,10 +4,10 @@ go 1.25
 
 require (
 	github.com/diskfs/go-diskfs v1.7.0
-	github.com/jaypipes/ghw v0.21.3
+	github.com/jaypipes/ghw v0.23.0
 	github.com/ncw/directio v1.0.5
 	github.com/wailsapp/wails/v3 v3.0.0-alpha.71
-	golang.org/x/sys v0.40.0
+	golang.org/x/sys v0.41.0
 )
 
 require (
@@ -59,4 +59,4 @@ require (
 
 // replace github.com/wailsapp/wails/v2 v2.11.0 => /Users/lleyton/go/pkg/mod
 
-replace github.com/jaypipes/ghw v0.21.2 => github.com/fyralabs/ghw v0.0.0-20260204000426-8e594c638562
+replace github.com/jaypipes/ghw v0.23.0 => github.com/fyralabs/ghw v0.0.0-20260212223645-988c8c5201b4
