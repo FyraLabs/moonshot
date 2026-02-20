@@ -4,7 +4,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import * as Field from '$lib/components/ui/field';
-	import { enableAnalytics, showAllDrives } from '../settings.svelte';
+	import { showAllDrives } from '../settings.svelte';
 </script>
 
 <div class="flex h-screen flex-col gap-6 p-6">
@@ -21,12 +21,11 @@
 				<Field.Content>
 					<Field.Label for="show-all-drives">Show all drives</Field.Label>
 					<Field.Description
-						>This will show all drives including internal drives, which may be dangerous
-						to flash.</Field.Description
+						>This will show all drives including internal drives, which may be dangerous to flash.</Field.Description
 					>
 				</Field.Content>
 			</Field.Field>
-			<Field.Field orientation="horizontal">
+			<!-- <Field.Field orientation="horizontal">
 				<Checkbox id="enable-analytics" bind:checked={enableAnalytics.current} />
 				<Field.Content>
 					<Field.Label for="enable-analytics">Enable privacy preserving analytics</Field.Label>
@@ -35,7 +34,7 @@
 						improving Moonshot.</Field.Description
 					>
 				</Field.Content>
-			</Field.Field>
+			</Field.Field> -->
 		</Field.Group>
 	</div>
 	<div class="ml-auto flex gap-3">
