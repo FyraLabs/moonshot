@@ -45,13 +45,6 @@ jobs:
         env:
           GOARCH: arm64
 
-      - name: Rename Windows artifacts
-        if: matrix.variants.runner == 'windows-latest'
-        run: |
-          cd bin
-          mv moonshot.exe moonshot-arm64.exe || true
-          mv moonshot-x64.exe moonshot.exe || true
-
       - uses: actions/upload-artifact@v6
         with:
           name: moonshot-${{ matrix.variants.runner }}
