@@ -66,6 +66,13 @@ jobs:
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
+      - run: |
+          ls -la artifacts
+          ls -la artifacts/moonshot-ubuntu-latest
+          ls -la artifacts/moonshot-ubuntu-24.04-arm
+          ls -la artifacts/moonshot-macos-latest
+          ls -la artifacts/moonshot-windows-latest
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
