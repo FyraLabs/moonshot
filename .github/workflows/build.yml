@@ -66,12 +66,16 @@ jobs:
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - run: |
-          ls -la artifacts
-          ls -la artifacts/moonshot-ubuntu-latest
-          ls -la artifacts/moonshot-ubuntu-24.04-arm
-          ls -la artifacts/moonshot-macos-latest
-          ls -la artifacts/moonshot-windows-latest
+      - name: Assemble release assets
+        run: |
+          mkdir -p release
+          mv artifacts/moonshot-ubuntu-latest/moonshot release/moonshot-linux-x86_64
+          mv artifacts/moonshot-ubuntu-latest/moonshot-x86_64.AppImage release/moonshot-x86_64.AppImage
+          mv artifacts/moonshot-ubuntu-24.04-arm/moonshot release/moonshot-linux-aarch64
+          mv artifacts/moonshot-ubuntu-24.04-arm/moonshot-aarch64.AppImage release/moonshot-aarch64.AppImage
+          mv artifacts/moonshot-macos-latest/moonshot.app release/Moonshot.app
+          mv artifacts/moonshot-windows-latest/moonshot-arm64.exe release/moonshot-arm64.exe
+          mv artifacts/moonshot-windows-latest/moonshot-x64.exe release/moonshot-x64.exe
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
