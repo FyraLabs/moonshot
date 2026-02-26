@@ -1,7 +1,9 @@
-name: Build Application
+name: Build & Release
 
 on:
   push:
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -42,7 +44,42 @@ jobs:
           mv bin\moonshot.exe bin\moonshot-arm64.exe
         env:
           GOARCH: arm64
+
+      - name: Rename Windows artifacts
+        if: matrix.variants.runner == 'windows-latest'
+        run: |
+          cd bin
+          mv moonshot.exe moonshot-arm64.exe || true
+          mv moonshot-x64.exe moonshot.exe || true
+
       - uses: actions/upload-artifact@v6
         with:
           name: moonshot-${{ matrix.variants.runner }}
           path: bin
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v6
+        with:
+          path: artifacts
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: ${{ contains(steps.version.outputs.VERSION, 'alpha') || contains(steps.version.outputs.VERSION, 'beta') || contains(steps.version.outputs.VERSION, 'rc') }}
+          make_latest: ${{ !(contains(steps.version.outputs.VERSION, 'alpha') || contains(steps.version.outputs.VERSION, 'beta') || contains(steps.version.outputs.VERSION, 'rc')) }}
+          generate_release_notes: true
+          files: |
+            artifacts/moonshot-ubuntu-latest/*
+            artifacts/moonshot-ubuntu-24.04-arm/*
+            artifacts/moonshot-macos-latest/*
+            artifacts/moonshot-windows-latest/*
