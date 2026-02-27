@@ -71,8 +71,14 @@ jobs:
           mkdir -p release
           mv artifacts/moonshot-ubuntu-latest/moonshot release/moonshot-linux-x86_64
           mv artifacts/moonshot-ubuntu-latest/moonshot-x86_64.AppImage release/moonshot-x86_64.AppImage
+          mv artifacts/moonshot-ubuntu-latest/moonshot.deb release/moonshot-x86_64.deb
+          mv artifacts/moonshot-ubuntu-latest/moonshot.rpm release/moonshot-x86_64.rpm
+          mv artifacts/moonshot-ubuntu-latest/moonshot.pkg.tar.zst release/moonshot-x86_64.pkg.tar.zst
           mv artifacts/moonshot-ubuntu-24.04-arm/moonshot release/moonshot-linux-aarch64
           mv artifacts/moonshot-ubuntu-24.04-arm/moonshot-aarch64.AppImage release/moonshot-aarch64.AppImage
+          mv artifacts/moonshot-ubuntu-24.04-arm/moonshot.deb release/moonshot-aarch64.deb
+          mv artifacts/moonshot-ubuntu-24.04-arm/moonshot.rpm release/moonshot-aarch64.rpm
+          mv artifacts/moonshot-ubuntu-24.04-arm/moonshot.pkg.tar.zst release/moonshot-aarch64.pkg.tar.zst
           zip -r release/Moonshot.app.zip artifacts/moonshot-macos-latest/moonshot.app
           mv artifacts/moonshot-windows-latest/moonshot-arm64.exe release/moonshot-arm64.exe
           mv artifacts/moonshot-windows-latest/moonshot-x64.exe release/moonshot-x64.exe
