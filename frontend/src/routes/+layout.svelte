@@ -1,4 +1,6 @@
 <script lang="ts">
+	import '@fontsource-variable/geist';
+	import '@fontsource-variable/geist-mono';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { ModeWatcher } from 'mode-watcher';
