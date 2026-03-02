@@ -13,7 +13,7 @@ maintainer: ${GIT_COMMITTER_NAME} <${GIT_COMMITTER_EMAIL}>
 description: "A beautiful cross-platform flashing tool."
 vendor: "Fyra Labs"
 homepage: "https://wails.io"
-license: "MIT"
+license: "GPL-3.0-or-later"
 release: "1"
 
 contents:
@@ -36,8 +36,8 @@ overrides:
     depends:
       - gtk3
       - webkit2gtk4.1
-  
-  # Arch Linux packages (WebKit 4.1)  
+
+  # Arch Linux packages (WebKit 4.1)
   archlinux:
     depends:
       - gtk3
