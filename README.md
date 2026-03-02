@@ -19,3 +19,5 @@ To build a redistributable, production mode package, use `wails build`.
 ## "Moonshot"?
 
 See the Suisei song with the same title.
+
+<img style="vertical-align: middle" height="1000" src="build/screenshot.png" alt="Moonshot">
