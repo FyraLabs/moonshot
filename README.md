@@ -1,5 +1,7 @@
 # 🌙 ☄️ Moonshot
 
+<img style="vertical-align: middle" height="1000" src="build/screenshot.png" alt="Moonshot">
+
 A beautiful cross-platform flashing tool.
 
 ## Why?
@@ -7,6 +9,17 @@ A beautiful cross-platform flashing tool.
 - Community frustration with existing flashing tools.
 - We have unique ideas that we want to implement in the future, ex: selecting distro images from within the app.
 - For fun.
+
+## Installing
+
+### Linux
+Grab Moonshot from [Flathub](link)
+
+### Windows
+Get the exe file from the releases tab.
+
+### macOS
+Get the DMG from the releases tab.
 
 ## Development
 
@@ -20,4 +33,3 @@ To build a redistributable, production mode package, use `wails build`.
 
 See the Suisei song with the same title.
 
-<img style="vertical-align: middle" height="1000" src="build/screenshot.png" alt="Moonshot">
